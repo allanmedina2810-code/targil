@@ -35,6 +35,9 @@
   --font-ui:"Rubik","Noto Sans Ethiopic",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --font-he:"Frank Ruhl Libre","Rubik","Arial Hebrew","Times New Roman",serif;
   --r:14px;
+  --viewer:#0b0f18;     /* photo viewer stays dark in both themes */
+  --on-viewer:#f2f5fb;
+  --viewer-hover:rgba(255,255,255,.14);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -263,9 +266,66 @@ input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 
 .key-box{padding:16px;border:1px solid var(--line);border-radius:var(--r);background:var(--sheet)}
 input[type=password]{font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%;min-width:0}
 
+/* v2: home tiles, parent area, photos, coach, feedback, work check */
+.tile-wide{grid-column:1/-1;min-height:0;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:14px 16px}
+.tile-wide .tile-ico{position:static}
+.tile-text{display:grid;gap:2px;min-width:0}
+.tile-wide .tile-title{margin:0}
+.tile-wide .tile-he{align-self:center}
+.parent-link{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;width:100%;padding:14px 16px;border-radius:var(--r);border:1px solid var(--line);background:var(--sheet);text-align:left;cursor:pointer}
+.parent-link:hover{border-color:var(--accent)}
+.parent-ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--accent-2);color:var(--accent)}
+.choice-sm{padding:10px 12px}
+.field-label{font-size:.92rem;font-weight:500}
+.pin-input{font:inherit;font-size:1.6rem;letter-spacing:.5em;text-align:center;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%;max-width:220px}
+.pin-input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-2)}
+.photo-strip{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.photo-thumb{flex:none;width:84px;aspect-ratio:3/4;max-width:100%;border-radius:10px;overflow:hidden;border:1px solid var(--line);padding:0;background:var(--sheet);cursor:zoom-in}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.viewer{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;background:var(--viewer);color:var(--on-viewer);padding-top:env(safe-area-inset-top,0px)}
+.viewer-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px}
+.viewer-tools{display:flex;gap:2px}
+.viewer .icon-btn{color:var(--on-viewer)}
+.viewer .icon-btn:hover{background:var(--viewer-hover)}
+.viewer-count{font-size:.9rem;font-variant-numeric:tabular-nums}
+.viewer-scroll{flex:1;overflow:auto;padding-bottom:env(safe-area-inset-bottom,0px)}
+.viewer-scroll img{display:block;max-width:none;margin:0 auto}
+.he-edit{font-family:var(--font-he);font-size:1.15rem;line-height:1.7;text-align:right}
+.israel{display:grid;gap:6px;padding:12px 14px;border-radius:12px;border:1px dashed var(--margin);background:var(--sheet)}
+.israel .tr-label{color:var(--margin)}
+.israel ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.coach{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:var(--r);border:1px solid var(--line);border-right:3px solid var(--margin);background:var(--sheet);box-shadow:var(--shadow)}
+.coach-title{margin:0;font-size:1.15rem;font-weight:600}
+.hint-card{display:grid;gap:6px;padding:12px 14px;border-radius:10px;background:var(--note);animation:rise .35s ease both}
+.hint-card p{margin:0}
+.hint-btn{justify-content:flex-start}
+.copy-box{display:grid;gap:10px;padding:16px;border-radius:var(--r);border:1px dashed var(--accent);background:var(--sheet)}
+.copy-box .sec-title{display:flex;align-items:center;gap:6px}
+.copy-res{display:grid;gap:10px}
+.res-row{display:grid;gap:2px}
+.res-row p{margin:0;white-space:pre-line}
+.res-hint{padding:10px 12px;border-radius:10px;background:var(--note)}
+.res-good{padding:10px 12px;border-radius:10px;background:var(--good-bg)}
+.res-good .tr-label{color:var(--good)}
+.pill{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;padding:4px 12px;border-radius:999px;font-size:.88rem;font-weight:600}
+.pill-correct{background:var(--good-bg);color:var(--good)}
+.pill-error{background:var(--warn-bg);color:var(--warn)}
+.pill-incomplete{background:var(--accent-2);color:var(--accent)}
+.pill-unreadable{background:var(--paper);color:var(--ink-2);border:1px solid var(--line)}
+.fb-box{display:grid;gap:10px;padding:14px 16px;border-radius:var(--r);border:1px solid var(--line);background:var(--sheet)}
+.fb-q{font-weight:500}
+.fb-row{display:flex;flex-wrap:wrap;gap:8px}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px}
+.chip-btn{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--sheet);cursor:pointer;font-size:.9rem}
+.chip-btn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-2);color:var(--accent)}
+.fb-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.fb-list li{display:grid;gap:2px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--sheet);font-size:.92rem}
+.fb-when{color:var(--ink-2);font-size:.82rem}
+.fb-comment{font-style:italic}
+
 @media (prefers-reduced-motion: reduce){
   .scan-line{animation:none;top:50%}
-  .pen i,.step,.answer{animation:none}
+  .pen i,.step,.answer,.hint-card{animation:none}
   .tile{transition:none}
 }
 </style>
@@ -567,7 +627,8 @@ fr:{
     answer:"a. Ensemble, ils ont mangé 5/8 de la pizza.\nb. Il reste 3/8 de la pizza.",
     answer_hebrew:"תשובה: א. יחד אכלו 5/8 מהפיצה.\nב. נשארו 3/8 מהפיצה.",
     check:"5/8 + 3/8 = 8/8, soit la pizza entière : le compte est bon.",
-    watch_out:"On n'additionne jamais les dénominateurs : 3/8 + 1/4 ne fait pas 4/12."
+    watch_out:"On n'additionne jamais les dénominateurs : 3/8 + 1/4 ne fait pas 4/12.",
+    differences:["En Israël, les nombres décimaux s'écrivent avec un point : 0.5 et non 0,5. Pense-y quand tu transformes une fraction en nombre décimal."]
   }}
 },
 en:{
@@ -605,21 +666,223 @@ en:{
 }
 };
 
+/* ---------- interface text added in v2 (merged into UI) ---------- */
+const UI2={
+fr:{
+  tileCheck:"Vérifier ma copie",tileCheckSub:"Je trouve la première erreur",
+  modeCheck:"Ma copie",capCheck:"Photographie ta copie",
+  capCheckTip:"Prends la feuille avec tes calculs, bien à plat. Ajoute la page de l'énoncé si elle est ailleurs. Jusqu'à {n} photos.",
+  checkBtn:"Vérifier ma copie",checking:"Je regarde ta copie…",
+  checkFound:{one:"{n} exercice vérifié",other:"{n} exercices vérifiés"},
+  stCorrect:"Juste !",stError:"Il y a une erreur",stIncomplete:"Pas encore fini",stUnreadable:"Illisible",
+  where:"Où regarder",hintLabel:"Indice",good:"Ce qui est bien",
+  checkAnother:"Vérifier une autre copie",noStatement:"L'énoncé n'est pas sur la photo.",
+  copyTitle:"Tu l'as fait dans ton cahier ?",copySub:"Photographie ta copie : je cherche la première erreur, sans te donner la réponse.",
+  copyBtn:"Photographier ma copie",copyAgain:"Vérifier une nouvelle photo",
+  readCheckTitle:"Vérifie la lecture",readCheck:"Compare le texte hébreu avec ta feuille. S'il y a une erreur (un chiffre, un signe), corrige-le avant de demander l'explication.",
+  editText:"Corriger le texte",saveText:"Enregistrer",cancel:"Annuler",retranslating:"Je retraduis le texte corrigé…",textUpdated:"Texte corrigé et retraduit",
+  yourPhoto:"Ta photo",photoHint:"Touche pour agrandir",zoomIn:"Agrandir",zoomOut:"Réduire",close:"Fermer",pageOf:"Page {i} sur {n}",prevPage:"Page précédente",nextPage:"Page suivante",
+  fbQ:"Cette explication t'aide ?",fbYes:"Oui",fbNo:"Non",fbWhat:"Qu'est-ce qui ne va pas ?",fbCalc:"Erreur de calcul",fbRead:"Énoncé mal lu",fbUnclear:"Pas clair",fbOther:"Autre",
+  fbCommentPh:"Explique en quelques mots (facultatif)",fbSend:"Envoyer",fbThanks:"Merci, c'est noté.",redo:"Refaire l'explication",redoing:"Je refais l'explication avec plus de soin…",
+  originQ:"Où as-tu appris les maths avant Israël ?",originHint:"Pour te signaler ce qui s'écrit autrement ici (virgule, opérations posées…).",originOther:"Autre pays ou toujours en Israël",diffTitle:"Ici, en Israël",
+  parentSpace:"Espace parent",parentSub:"Clé API, code parent, mode d'aide et retours",parentLocked:"Réservé aux parents",
+  pinAdvice:"Choisis un code à 4 chiffres. Il protège la clé API et les réglages parent.",pinCreate:"Nouveau code (4 chiffres)",pinConfirm:"Confirme le code",savePin:"Enregistrer le code",
+  pinEnter:"Code parent",pinWrong:"Code incorrect.",pinMismatch:"Les deux codes ne sont pas identiques.",pinFormat:"Le code doit avoir 4 chiffres.",pinSaved:"Code parent enregistré.",
+  pinChange:"Changer le code",pinForgot:"Code oublié ?",pinResetWarn:"Réinitialiser efface le code et la clé API de cet appareil. Il faudra recoller la clé.",pinResetBtn:"Réinitialiser",pinResetDone:"Code et clé effacés.",
+  unlock:"Déverrouiller",lock:"Verrouiller",
+  helpModeTitle:"Mode d'aide",helpFree:"Libre",helpFreeSub:"Indices proposés, solution accessible à tout moment",helpGuided:"Indices d'abord",helpGuidedSub:"La solution s'ouvre après un essai, une copie vérifiée ou les deux indices",
+  fbTitle:"Retours sur les explications",fbSummary:"{up} utiles · {down} signalées",fbNone:"Aucun retour pour l'instant.",
+  tryTitle:"À toi d'abord",tryQ:"À ton avis, que faut-il faire en premier ?",tryPh:"Écris ton idée, même incomplète…",tryCheck:"Vérifier mon idée",
+  hint1:"Indice 1 : la notion",hint2:"Indice 2 : la première étape",fullSolution:"Voir toute la solution",
+  lockedSolution:"Pour débloquer la solution : propose une idée, fais vérifier ta copie ou ouvre les deux indices.",
+  calcVerified:"Calculs vérifiés à la calculatrice",
+  setupText:"Un parent doit créer un code parent et ajouter la clé API Claude.",setupCta:"Ouvrir l'espace parent",
+  errNoKey:"Aucune clé API n'est enregistrée. Un parent doit l'ajouter dans l'espace parent."
+},
+en:{
+  tileCheck:"Check my work",tileCheckSub:"I find the first mistake",
+  modeCheck:"My work",capCheck:"Snap your work",
+  capCheckTip:"Photograph the sheet with your working, flat. Add the page with the exercise if it is somewhere else. Up to {n} photos.",
+  checkBtn:"Check my work",checking:"Looking at your work…",
+  checkFound:{one:"{n} exercise checked",other:"{n} exercises checked"},
+  stCorrect:"Correct!",stError:"There's a mistake",stIncomplete:"Not finished yet",stUnreadable:"Can't read it",
+  where:"Where to look",hintLabel:"Hint",good:"What you did well",
+  checkAnother:"Check other work",noStatement:"The exercise isn't in the photo.",
+  copyTitle:"Did it in your notebook?",copySub:"Snap your work: I'll find the first mistake without giving you the answer.",
+  copyBtn:"Snap my work",copyAgain:"Check a new photo",
+  readCheckTitle:"Check the reading",readCheck:"Compare the Hebrew text with your sheet. If something is wrong (a number, a sign), fix it before asking for the explanation.",
+  editText:"Fix the text",saveText:"Save",cancel:"Cancel",retranslating:"Translating the corrected text…",textUpdated:"Text fixed and translated again",
+  yourPhoto:"Your photo",photoHint:"Tap to zoom",zoomIn:"Zoom in",zoomOut:"Zoom out",close:"Close",pageOf:"Page {i} of {n}",prevPage:"Previous page",nextPage:"Next page",
+  fbQ:"Does this explanation help?",fbYes:"Yes",fbNo:"No",fbWhat:"What's wrong?",fbCalc:"Calculation mistake",fbRead:"Exercise misread",fbUnclear:"Not clear",fbOther:"Other",
+  fbCommentPh:"Say it in a few words (optional)",fbSend:"Send",fbThanks:"Thanks, noted.",redo:"Redo the explanation",redoing:"Redoing the explanation more carefully…",
+  originQ:"Which country did you go to school in before Israel?",originHint:"So I can point out what is written differently here (decimal comma or point, column layout…).",originOther:"Another country, or always in Israel",diffTitle:"Here in Israel",
+  parentSpace:"Parent area",parentSub:"API key, parent code, help mode and feedback",parentLocked:"Parents only",
+  pinAdvice:"Choose a 4-digit code. It protects the API key and the parent settings.",pinCreate:"New code (4 digits)",pinConfirm:"Confirm the code",savePin:"Save the code",
+  pinEnter:"Parent code",pinWrong:"Wrong code.",pinMismatch:"The two codes don't match.",pinFormat:"The code must have 4 digits.",pinSaved:"Parent code saved.",
+  pinChange:"Change the code",pinForgot:"Forgot the code?",pinResetWarn:"Resetting erases the code and the API key from this device. You'll need to paste the key again.",pinResetBtn:"Reset",pinResetDone:"Code and key erased.",
+  unlock:"Unlock",lock:"Lock",
+  helpModeTitle:"Help mode",helpFree:"Free",helpFreeSub:"Hints offered, solution available at any time",helpGuided:"Hints first",helpGuidedSub:"The solution opens after an attempt, a checked piece of work or both hints",
+  fbTitle:"Feedback on explanations",fbSummary:"{up} helpful · {down} flagged",fbNone:"No feedback yet.",
+  tryTitle:"You first",tryQ:"What do you think you should do first?",tryPh:"Write your idea, even if it's incomplete…",tryCheck:"Check my idea",
+  hint1:"Hint 1: the topic",hint2:"Hint 2: the first step",fullSolution:"See the whole solution",
+  lockedSolution:"To unlock the solution: suggest an idea, have your work checked or open both hints.",
+  calcVerified:"Calculations checked with the calculator",
+  setupText:"A parent needs to create a parent code and add the Claude API key.",setupCta:"Open the parent area",
+  errNoKey:"No API key is saved. A parent needs to add it in the parent area."
+},
+ru:{
+  tileCheck:"Проверить тетрадь",tileCheckSub:"Найду первую ошибку",
+  modeCheck:"Моя работа",capCheck:"Сфотографируй свою работу",
+  capCheckTip:"Сфотографируй лист со своими вычислениями, ровно. Если условие на другой странице, добавь и её. До {n} фото.",
+  checkBtn:"Проверить работу",checking:"Смотрю твою работу…",
+  checkFound:"Проверено заданий: {n}",
+  stCorrect:"Верно!",stError:"Есть ошибка",stIncomplete:"Ещё не закончено",stUnreadable:"Не получается прочитать",
+  where:"Где посмотреть",hintLabel:"Подсказка",good:"Что получилось хорошо",
+  checkAnother:"Проверить другую работу",noStatement:"Условия нет на фото.",
+  copyTitle:"Решаешь в тетради?",copySub:"Сфотографируй своё решение: я найду первую ошибку и не скажу ответ.",
+  copyBtn:"Сфотографировать решение",copyAgain:"Проверить новое фото",
+  readCheckTitle:"Проверь распознавание",readCheck:"Сравни текст на иврите со своим листом. Если есть ошибка (цифра, знак), исправь её, прежде чем просить объяснение.",
+  editText:"Исправить текст",saveText:"Сохранить",cancel:"Отмена",retranslating:"Перевожу исправленный текст…",textUpdated:"Текст исправлен и переведён заново",
+  yourPhoto:"Твоё фото",photoHint:"Нажми, чтобы увеличить",zoomIn:"Увеличить",zoomOut:"Уменьшить",close:"Закрыть",pageOf:"Страница {i} из {n}",prevPage:"Предыдущая страница",nextPage:"Следующая страница",
+  fbQ:"Это объяснение помогает?",fbYes:"Да",fbNo:"Нет",fbWhat:"Что не так?",fbCalc:"Ошибка в вычислениях",fbRead:"Неверно прочитано условие",fbUnclear:"Непонятно",fbOther:"Другое",
+  fbCommentPh:"Объясни в двух словах (необязательно)",fbSend:"Отправить",fbThanks:"Спасибо, записано.",redo:"Объяснить заново",redoing:"Объясняю заново, внимательнее…",
+  originQ:"В какой стране была твоя школа до Израиля?",originHint:"Чтобы подсказывать, что здесь пишут иначе (запятая или точка, запись столбиком…).",originOther:"Другая страна или всегда в Израиле",diffTitle:"Здесь, в Израиле",
+  parentSpace:"Раздел для родителей",parentSub:"API-ключ, родительский код, режим помощи и отзывы",parentLocked:"Только для родителей",
+  pinAdvice:"Выберите код из 4 цифр. Он защищает API-ключ и настройки для родителей.",pinCreate:"Новый код (4 цифры)",pinConfirm:"Повторите код",savePin:"Сохранить код",
+  pinEnter:"Родительский код",pinWrong:"Неверный код.",pinMismatch:"Коды не совпадают.",pinFormat:"Код должен состоять из 4 цифр.",pinSaved:"Родительский код сохранён.",
+  pinChange:"Сменить код",pinForgot:"Забыли код?",pinResetWarn:"Сброс удалит код и API-ключ с этого устройства. Ключ нужно будет вставить снова.",pinResetBtn:"Сбросить",pinResetDone:"Код и ключ удалены.",
+  unlock:"Разблокировать",lock:"Заблокировать",
+  helpModeTitle:"Режим помощи",helpFree:"Свободный",helpFreeSub:"Подсказки предлагаются, решение доступно в любой момент",helpGuided:"Сначала подсказки",helpGuidedSub:"Решение открывается после попытки, проверенной работы или двух подсказок",
+  fbTitle:"Отзывы об объяснениях",fbSummary:"Полезно: {up} · Отмечено: {down}",fbNone:"Отзывов пока нет.",
+  tryTitle:"Сначала ты",tryQ:"Как ты думаешь, что нужно сделать сначала?",tryPh:"Напиши свою идею, даже неполную…",tryCheck:"Проверить идею",
+  hint1:"Подсказка 1: тема",hint2:"Подсказка 2: первый шаг",fullSolution:"Показать всё решение",
+  lockedSolution:"Чтобы открыть решение: предложи идею, проверь свою работу или открой обе подсказки.",
+  calcVerified:"Вычисления проверены калькулятором",
+  setupText:"Родителю нужно создать родительский код и добавить API-ключ Claude.",setupCta:"Открыть раздел для родителей",
+  errNoKey:"API-ключ не сохранён. Родителю нужно добавить его в разделе для родителей."
+},
+uk:{
+  tileCheck:"Перевірити зошит",tileCheckSub:"Знайду першу помилку",
+  modeCheck:"Моя робота",capCheck:"Сфотографуй свою роботу",
+  capCheckTip:"Сфотографуй аркуш зі своїми обчисленнями, рівно. Якщо умова на іншій сторінці, додай і її. До {n} фото.",
+  checkBtn:"Перевірити роботу",checking:"Дивлюся твою роботу…",
+  checkFound:"Перевірено завдань: {n}",
+  stCorrect:"Правильно!",stError:"Є помилка",stIncomplete:"Ще не завершено",stUnreadable:"Не вдається прочитати",
+  where:"Де подивитися",hintLabel:"Підказка",good:"Що вийшло добре",
+  checkAnother:"Перевірити іншу роботу",noStatement:"Умови немає на фото.",
+  copyTitle:"Розв'язуєш у зошиті?",copySub:"Сфотографуй своє розв'язання: я знайду першу помилку і не скажу відповідь.",
+  copyBtn:"Сфотографувати розв'язання",copyAgain:"Перевірити нове фото",
+  readCheckTitle:"Перевір розпізнавання",readCheck:"Порівняй текст івритом зі своїм аркушем. Якщо є помилка (цифра, знак), виправ її, перш ніж просити пояснення.",
+  editText:"Виправити текст",saveText:"Зберегти",cancel:"Скасувати",retranslating:"Перекладаю виправлений текст…",textUpdated:"Текст виправлено й перекладено заново",
+  yourPhoto:"Твоє фото",photoHint:"Натисни, щоб збільшити",zoomIn:"Збільшити",zoomOut:"Зменшити",close:"Закрити",pageOf:"Сторінка {i} з {n}",prevPage:"Попередня сторінка",nextPage:"Наступна сторінка",
+  fbQ:"Це пояснення допомагає?",fbYes:"Так",fbNo:"Ні",fbWhat:"Що не так?",fbCalc:"Помилка в обчисленнях",fbRead:"Умову прочитано неправильно",fbUnclear:"Незрозуміло",fbOther:"Інше",
+  fbCommentPh:"Поясни кількома словами (необов'язково)",fbSend:"Надіслати",fbThanks:"Дякую, записано.",redo:"Пояснити заново",redoing:"Пояснюю заново, уважніше…",
+  originQ:"У якій країні була твоя школа до Ізраїлю?",originHint:"Щоб підказувати, що тут пишуть інакше (кома чи крапка, запис у стовпчик…).",originOther:"Інша країна або завжди в Ізраїлі",diffTitle:"Тут, в Ізраїлі",
+  parentSpace:"Розділ для батьків",parentSub:"API-ключ, батьківський код, режим допомоги та відгуки",parentLocked:"Лише для батьків",
+  pinAdvice:"Оберіть код із 4 цифр. Він захищає API-ключ і налаштування для батьків.",pinCreate:"Новий код (4 цифри)",pinConfirm:"Повторіть код",savePin:"Зберегти код",
+  pinEnter:"Батьківський код",pinWrong:"Неправильний код.",pinMismatch:"Коди не збігаються.",pinFormat:"Код має складатися з 4 цифр.",pinSaved:"Батьківський код збережено.",
+  pinChange:"Змінити код",pinForgot:"Забули код?",pinResetWarn:"Скидання видалить код і API-ключ із цього пристрою. Ключ потрібно буде вставити знову.",pinResetBtn:"Скинути",pinResetDone:"Код і ключ видалено.",
+  unlock:"Розблокувати",lock:"Заблокувати",
+  helpModeTitle:"Режим допомоги",helpFree:"Вільний",helpFreeSub:"Підказки пропонуються, розв'язання доступне будь-коли",helpGuided:"Спершу підказки",helpGuidedSub:"Розв'язання відкривається після спроби, перевіреної роботи або двох підказок",
+  fbTitle:"Відгуки про пояснення",fbSummary:"Корисно: {up} · Позначено: {down}",fbNone:"Відгуків поки немає.",
+  tryTitle:"Спершу ти",tryQ:"Як ти думаєш, що треба зробити спочатку?",tryPh:"Напиши свою ідею, навіть неповну…",tryCheck:"Перевірити ідею",
+  hint1:"Підказка 1: тема",hint2:"Підказка 2: перший крок",fullSolution:"Показати все розв'язання",
+  lockedSolution:"Щоб відкрити розв'язання: запропонуй ідею, перевір свою роботу або відкрий обидві підказки.",
+  calcVerified:"Обчислення перевірено калькулятором",
+  setupText:"Батькам потрібно створити батьківський код і додати API-ключ Claude.",setupCta:"Відкрити розділ для батьків",
+  errNoKey:"API-ключ не збережено. Батькам потрібно додати його в розділі для батьків."
+},
+es:{
+  tileCheck:"Revisar mi cuaderno",tileCheckSub:"Encuentro el primer error",
+  modeCheck:"Mi trabajo",capCheck:"Fotografía tu trabajo",
+  capCheckTip:"Fotografía la hoja con tus cálculos, bien plana. Si el enunciado está en otra página, añádela también. Hasta {n} fotos.",
+  checkBtn:"Revisar mi trabajo",checking:"Estoy mirando tu trabajo…",
+  checkFound:{one:"{n} ejercicio revisado",other:"{n} ejercicios revisados"},
+  stCorrect:"¡Correcto!",stError:"Hay un error",stIncomplete:"Aún sin terminar",stUnreadable:"No se puede leer",
+  where:"Dónde mirar",hintLabel:"Pista",good:"Lo que está bien",
+  checkAnother:"Revisar otro trabajo",noStatement:"El enunciado no aparece en la foto.",
+  copyTitle:"¿Lo hiciste en tu cuaderno?",copySub:"Fotografía tu solución: busco el primer error sin darte la respuesta.",
+  copyBtn:"Fotografiar mi solución",copyAgain:"Revisar una nueva foto",
+  readCheckTitle:"Revisa la lectura",readCheck:"Compara el texto en hebreo con tu hoja. Si hay un error (un número, un signo), corrígelo antes de pedir la explicación.",
+  editText:"Corregir el texto",saveText:"Guardar",cancel:"Cancelar",retranslating:"Estoy traduciendo el texto corregido…",textUpdated:"Texto corregido y traducido de nuevo",
+  yourPhoto:"Tu foto",photoHint:"Toca para ampliar",zoomIn:"Ampliar",zoomOut:"Reducir",close:"Cerrar",pageOf:"Página {i} de {n}",prevPage:"Página anterior",nextPage:"Página siguiente",
+  fbQ:"¿Te ayuda esta explicación?",fbYes:"Sí",fbNo:"No",fbWhat:"¿Qué falla?",fbCalc:"Error de cálculo",fbRead:"Enunciado mal leído",fbUnclear:"No está claro",fbOther:"Otro",
+  fbCommentPh:"Explícalo en pocas palabras (opcional)",fbSend:"Enviar",fbThanks:"Gracias, queda anotado.",redo:"Rehacer la explicación",redoing:"Estoy rehaciendo la explicación con más cuidado…",
+  originQ:"¿En qué país ibas a la escuela antes de Israel?",originHint:"Para avisarte de lo que aquí se escribe distinto (coma o punto, operaciones en columna…).",originOther:"Otro país o siempre en Israel",diffTitle:"Aquí, en Israel",
+  parentSpace:"Espacio para padres",parentSub:"Clave API, código parental, modo de ayuda y comentarios",parentLocked:"Solo para padres",
+  pinAdvice:"Elige un código de 4 cifras. Protege la clave API y los ajustes para padres.",pinCreate:"Nuevo código (4 cifras)",pinConfirm:"Confirma el código",savePin:"Guardar el código",
+  pinEnter:"Código parental",pinWrong:"Código incorrecto.",pinMismatch:"Los dos códigos no coinciden.",pinFormat:"El código debe tener 4 cifras.",pinSaved:"Código parental guardado.",
+  pinChange:"Cambiar el código",pinForgot:"¿Olvidaste el código?",pinResetWarn:"Restablecer borra el código y la clave API de este dispositivo. Habrá que volver a pegar la clave.",pinResetBtn:"Restablecer",pinResetDone:"Código y clave borrados.",
+  unlock:"Desbloquear",lock:"Bloquear",
+  helpModeTitle:"Modo de ayuda",helpFree:"Libre",helpFreeSub:"Se proponen pistas; la solución está disponible en todo momento",helpGuided:"Primero las pistas",helpGuidedSub:"La solución se abre tras un intento, un trabajo revisado o las dos pistas",
+  fbTitle:"Comentarios sobre las explicaciones",fbSummary:"{up} útiles · {down} señaladas",fbNone:"Todavía no hay comentarios.",
+  tryTitle:"Primero tú",tryQ:"¿Qué crees que hay que hacer primero?",tryPh:"Escribe tu idea, aunque esté incompleta…",tryCheck:"Comprobar mi idea",
+  hint1:"Pista 1: el tema",hint2:"Pista 2: el primer paso",fullSolution:"Ver toda la solución",
+  lockedSolution:"Para desbloquear la solución: propón una idea, revisa tu trabajo o abre las dos pistas.",
+  calcVerified:"Cálculos comprobados con la calculadora",
+  setupText:"Un adulto debe crear un código parental y añadir la clave API de Claude.",setupCta:"Abrir el espacio para padres",
+  errNoKey:"No hay ninguna clave API guardada. Un adulto debe añadirla en el espacio para padres."
+}
+};
+for(const l in UI2) Object.assign(UI[l],UI2[l]);
+
 /* ---------- storage (per device, best effort) ---------- */
-const K={set:"targil.settings",hist:"targil.history",lex:"targil.lexicon",key:"targil.apikey"};
+const K={set:"targil.settings",hist:"targil.history",lex:"targil.lexicon",key:"targil.apikey",pin:"targil.pin",parent:"targil.parent",fb:"targil.feedback"};
 const store={
   get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},
-  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},
+  del(k){try{localStorage.removeItem(k);}catch(e){}}
 };
 const arr=x=>Array.isArray(x)?x:[];
 const str=x=>typeof x==="string"?x.trim():(x==null||typeof x==="object"?"":String(x));
-let settings=Object.assign({lang:"fr",grade:null},store.get(K.set,{})||{});
+let settings=Object.assign({lang:"fr",grade:null,origin:""},store.get(K.set,{})||{});
 if(!LANGS.some(l=>l.code===settings.lang)) settings.lang="fr";
+let PARENT=Object.assign({helpMode:"free"},store.get(K.parent,{})||{});
 let HIST=arr(store.get(K.hist,[]));
 let LEX=arr(store.get(K.lex,[]));
+let FB=arr(store.get(K.fb,[]));
 const saveHist=()=>store.set(K.hist,HIST);
 const saveLex=()=>store.set(K.lex,LEX);
-const sessionImages=new Map();   // photos stay in memory only, for follow-up questions in this session
+const saveParent=()=>store.set(K.parent,PARENT);
+const saveFB=()=>{FB=FB.slice(0,200);store.set(K.fb,FB);};
+let parentUnlocked=false;
+function ens(e,k){if(!e[k]||typeof e[k]!=="object") e[k]={};return e[k];}
+
+/* Page photos are kept on the phone (IndexedDB) so an exercise can be reopened with its photo. */
+const photoDB=(()=>{
+  const mem=new Map(); let dbp=null;
+  function open(){
+    if(dbp) return dbp;
+    dbp=new Promise(res=>{
+      try{
+        const r=indexedDB.open("targil",1);
+        r.onupgradeneeded=()=>{try{r.result.createObjectStore("photos");}catch(e){}};
+        r.onsuccess=()=>res(r.result); r.onerror=()=>res(null); r.onblocked=()=>res(null);
+      }catch(e){res(null);}
+    });
+    return dbp;
+  }
+  function req(rq){return new Promise((res,rej)=>{rq.onsuccess=()=>res(rq.result);rq.onerror=()=>rej(rq.error);});}
+  async function put(id,blobs){
+    mem.set(id,blobs);
+    const db=await open(); if(!db) return;
+    try{await new Promise((res,rej)=>{const tx=db.transaction("photos","readwrite");tx.objectStore("photos").put(blobs,id);tx.oncomplete=res;tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error);});}catch(e){}
+  }
+  async function get(id){
+    if(mem.has(id)) return mem.get(id);
+    const db=await open(); if(!db) return null;
+    try{const v=await req(db.transaction("photos").objectStore("photos").get(id)); if(v) mem.set(id,v); return v||null;}catch(e){return null;}
+  }
+  async function keep(ids){
+    const db=await open(); if(!db) return;
+    try{
+      const st=db.transaction("photos","readwrite").objectStore("photos");
+      const keys=await req(st.getAllKeys());
+      for(const k of keys) if(ids.indexOf(k)<0){st.delete(k);mem.delete(k);}
+    }catch(e){}
+  }
+  return {put,get,keep};
+})();
 
 /* ---------- helpers ---------- */
 const $=s=>document.querySelector(s);
@@ -648,9 +911,18 @@ function t(key,vars){
 function gradeLocal(n){return (GRADE_LOCAL[uiLang()]||GRADE_LOCAL.en)(n);}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function fmtDate(ts){try{return new Intl.DateTimeFormat(uiLang(),{day:"numeric",month:"short"}).format(ts);}catch(e){return "";}}
+const ORIGINS=["FR","BE","CH","CA","US","GB","RU","UA","AR","MX","BR","ET","ZA"];
+function regionName(code,lang){try{return new Intl.DisplayNames([lang||uiLang()],{type:"region"}).of(code)||code;}catch(e){return code;}}
+function hasOrigin(o){return !!o&&o!=="IL";}
+function focusSoon(el){requestAnimationFrame(()=>{try{el.focus();}catch(e){}});}
+function smoothTo(el){
+  const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  try{el.scrollIntoView({block:"start",behavior:reduce?"auto":"smooth"});}catch(e){}
+}
 
 const ICONS={
   back:'<path d="M15 18l-6-6 6-6"/>',
+  fwd:'<path d="M9 18l6-6-6-6"/>',
   gear:'<path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/>',
   camera:'<path d="M4 8.5h3.2l1.8-2.5h6l1.8 2.5H20V19H4z"/><circle cx="12" cy="13.2" r="3.4"/>',
   image:'<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="M20.5 15.5l-5-5-9.5 9"/>',
@@ -665,7 +937,14 @@ const ICONS={
   globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.3 2.4 3.3 5.2 3.3 8.5s-1 6.1-3.3 8.5c-2.3-2.4-3.3-5.2-3.3-8.5s1-6.1 3.3-8.5z"/>',
   send:'<path d="M5 12h13M12 6l6 6-6 6"/>',
   download:'<path d="M12 4v11M7 10l5 5 5-5"/><path d="M5 19.5h14"/>',
-  key:'<circle cx="8" cy="15" r="3.5"/><path d="M10.5 12.5L19 4M16 7l2.5 2.5M14 9l2 2"/>'
+  key:'<circle cx="8" cy="15" r="3.5"/><path d="M10.5 12.5L19 4M16 7l2.5 2.5M14 9l2 2"/>',
+  lock:'<rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>',
+  bulb:'<path d="M9 17.5h6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 0-3.2 10c.6.4 1 1.1 1 1.9v.6h4.4v-.6c0-.8.4-1.5 1-1.9A5.5 5.5 0 0 0 12 3.5z"/>',
+  copyCheck:'<rect x="5.5" y="4.5" width="13" height="16" rx="2"/><path d="M9 4.5V3.5h6v1"/><path d="M8.8 13l2.3 2.3 4.4-4.6"/>',
+  thumbUp:'<path d="M7 11v8.5H4V11z"/><path d="M7 11l4-7c1.6 0 2.6 1.1 2.3 2.7L12.8 10H18a2 2 0 0 1 2 2.3l-1 5.5a2 2 0 0 1-2 1.7H7"/>',
+  thumbDown:'<g transform="rotate(180 12 12)"><path d="M7 11v8.5H4V11z"/><path d="M7 11l4-7c1.6 0 2.6 1.1 2.3 2.7L12.8 10H18a2 2 0 0 1 2 2.3l-1 5.5a2 2 0 0 1-2 1.7H7"/></g>',
+  zoomIn:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4M8.5 11h5M11 8.5v5"/>',
+  zoomOut:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4M8.5 11h5"/>'
 };
 function icon(name,size){
   const s=h("span",{class:"icon","aria-hidden":"true"});
@@ -711,14 +990,113 @@ function speakBtn(text){
   return h("button",{class:"icon-btn sm",onclick:()=>speak(text),"aria-label":t("listen"),title:t("listen")},icon("speaker",18));
 }
 
+/* ---------- exact calculator, offered to Claude as a tool ---------- */
+const Calc=(()=>{
+  const B=BigInt, abs=x=>x<0n?-x:x;
+  function gcd(a,b){a=abs(a);b=abs(b);while(b){const r=a%b;a=b;b=r;}return a;}
+  function fr(n,d){if(d===0n) throw new Error("division by zero");if(d<0n){n=-n;d=-d;}const g=gcd(n,d)||1n;return {n:n/g,d:d/g};}
+  const ap=x=>typeof x==="number";
+  const num=x=>ap(x)?x:Number(x.n)/Number(x.d);
+  const ONE={n:1n,d:1n};
+  function add(a,b){return ap(a)||ap(b)?num(a)+num(b):fr(a.n*b.d+b.n*a.d,a.d*b.d);}
+  function sub(a,b){return ap(a)||ap(b)?num(a)-num(b):fr(a.n*b.d-b.n*a.d,a.d*b.d);}
+  function mul(a,b){return ap(a)||ap(b)?num(a)*num(b):fr(a.n*b.n,a.d*b.d);}
+  function div(a,b){
+    if(ap(a)||ap(b)){const y=num(b);if(y===0) throw new Error("division by zero");return num(a)/y;}
+    if(b.n===0n) throw new Error("division by zero");
+    return fr(a.n*b.d,a.d*b.n);
+  }
+  function isqrt(n){if(n<2n) return n;let x=n,y=(x+1n)/2n;while(y<x){x=y;y=(x+n/x)/2n;}return x;}
+  function sqrt(a){
+    if(ap(a)){if(a<0) throw new Error("square root of a negative number");return Math.sqrt(a);}
+    if(a.n<0n) throw new Error("square root of a negative number");
+    const rn=isqrt(a.n),rd=isqrt(a.d);
+    if(rn*rn===a.n&&rd*rd===a.d) return fr(rn,rd);
+    return Math.sqrt(num(a));
+  }
+  function pow(a,b){
+    if(!ap(a)&&!ap(b)&&b.d===1n){
+      let e=b.n; if(abs(e)>400n) throw new Error("exponent too large");
+      const base=e<0n?div(ONE,a):a; e=abs(e); let r=ONE;
+      for(let i=0n;i<e;i++) r=mul(r,base);
+      return r;
+    }
+    if(!ap(b)&&b.n===1n&&b.d===2n) return sqrt(a);
+    const v=Math.pow(num(a),num(b)); if(!isFinite(v)) throw new Error("invalid power"); return v;
+  }
+  function evaluate(src){
+    let s=String(src==null?"":src);
+    if(/\d,\d/.test(s)) throw new Error("use a dot for decimals and no thousands separator");
+    s=s.replace(/[×·∙]/g,"*").replace(/[÷:]/g,"/").replace(/[−–—]/g,"-").replace(/√\s*(\d+(?:\.\d+)?)/g,"sqrt($1)").replace(/√/g,"sqrt").replace(/\s+/g,"");
+    if(!s) throw new Error("empty expression");
+    let i=0;
+    const peek=()=>s[i];
+    const isSqrt=()=>s.startsWith("sqrt",i);
+    function expr(){let v=term();while(peek()==="+"||peek()==="-"){const op=s[i++];const r=term();v=op==="+"?add(v,r):sub(v,r);}return v;}
+    function term(){
+      let v=unary();
+      while(peek()==="*"||peek()==="/"||peek()==="("||isSqrt()){
+        let op="*"; if(peek()==="*"||peek()==="/") op=s[i++];
+        const r=unary(); v=op==="*"?mul(v,r):div(v,r);
+      }
+      return v;
+    }
+    function unary(){if(peek()==="-"){i++;return mul({n:-1n,d:1n},unary());}if(peek()==="+"){i++;return unary();}return power();}
+    function power(){const b=postfix();if(peek()==="^"){i++;return pow(b,unary());}return b;}
+    function postfix(){let v=primary();while(peek()==="%"){i++;v=div(v,{n:100n,d:1n});}return v;}
+    function primary(){
+      if(peek()==="("){i++;const v=expr();if(peek()!==")") throw new Error("missing )");i++;return v;}
+      if(isSqrt()){i+=4;if(peek()!=="(") throw new Error("write sqrt(…)");i++;const v=expr();if(peek()!==")") throw new Error("missing )");i++;return sqrt(v);}
+      const m=/^(\d+(\.\d*)?|\.\d+)/.exec(s.slice(i));
+      if(!m) throw new Error("unexpected "+(s[i]?"'"+s[i]+"'":"end of expression"));
+      i+=m[0].length;
+      const txt=m[0].replace(/\.$/,""), parts=txt.split("."), fp=parts[1]||"";
+      return fr(B((parts[0]||"0")+fp),10n**B(fp.length));
+    }
+    const v=expr();
+    if(i<s.length) throw new Error("unexpected '"+s[i]+"'");
+    return v;
+  }
+  const fmtFrac=x=>x.d===1n?x.n.toString():x.n.toString()+"/"+x.d.toString();
+  function fmtMixed(x){if(x.d===1n||abs(x.n)<x.d) return "";return (x.n<0n?"-":"")+(abs(x.n)/x.d)+" "+(abs(x.n)%x.d)+"/"+x.d;}
+  const roundStr=v=>String(Number(v.toPrecision(10)));
+  function fmtDec(x){
+    let d=x.d,k2=0,k5=0;
+    while(d%2n===0n){d/=2n;k2++;}
+    while(d%5n===0n){d/=5n;k5++;}
+    if(d!==1n) return "≈ "+roundStr(Number(x.n)/Number(x.d));
+    const k=Math.max(k2,k5), sc=x.n*(10n**B(k))/x.d, neg=sc<0n;
+    const digits=abs(sc).toString().padStart(k+1,"0");
+    return (neg?"-":"")+(k?digits.slice(0,-k)+"."+digits.slice(-k):digits);
+  }
+  function run(list){
+    return arr(list).slice(0,40).map(e=>{
+      try{
+        const v=evaluate(e);
+        if(ap(v)) return {expression:e,approximate:true,decimal:roundStr(v)};
+        const o={expression:e,exact:fmtFrac(v),decimal:fmtDec(v)}, mx=fmtMixed(v);
+        if(mx) o.mixed=mx;
+        return o;
+      }catch(err){return {expression:String(e),error:String(err&&err.message||err)};}
+    });
+  }
+  return {run};
+})();
+const CALC_TOOL={
+  name:"calculate",
+  description:"Exact calculator for school math. Evaluates arithmetic expressions with exact fractions and returns, for each one, the simplified fraction, the mixed number when relevant, and the decimal value. Supports + - * / ^ and parentheses, decimals written with a dot (no thousands separator), percent (25% means 25/100), sqrt(x), and mixed numbers written as (2+3/4). Send every expression you need in one call.",
+  input_schema:{type:"object",properties:{expressions:{type:"array",items:{type:"string"},description:"Expressions to evaluate, for example [\"3/8+1/4\", \"2.5*4\", \"(2+3/4)*2\"]"}},required:["expressions"]},
+  execute:input=>({results:Calc.run(input&&input.expressions)})
+};
+
 /* ---------- Claude API, called directly from the device with the parent's API key ---------- */
 const API_URL="https://api.anthropic.com/v1/messages";
 const MODELS={default:"claude-sonnet-5-5",complex:"claude-opus-5-5",quick:"claude-haiku-5-5"};
 const MAX_OUT={default:16000,complex:16000,quick:3000};
 function getKey(){return str(store.get(K.key,""));}
-function setKey(v){store.set(K.key,v);}
-let aiState="ready", installEvt=null;
-let imgLimits={maxCount:4,maxInputBytes:30000000,mediaTypes:["image/jpeg","image/png","image/webp","image/gif"]};
+function setKey(v){if(v) store.set(K.key,v); else store.del(K.key);}
+let installEvt=null;
+const imgLimits={maxCount:4,mediaTypes:["image/jpeg","image/png","image/webp","image/gif"]};
 function blobToBase64(blob){return readDataURL(blob).then(u=>String(u).split(",")[1]);}
 function mergeTurns(turns){
   const out=[];
@@ -729,22 +1107,23 @@ function mergeTurns(turns){
   }
   return out;
 }
-async function callClaude(input,o){
-  o=o||{};
-  const key=getKey(); if(!key) throw {code:"no_key"};
-  const tier=MODELS[o.modelTier]?o.modelTier:"default";
+async function buildMessages(input,images){
   const messages=mergeTurns(typeof input==="string"?[{role:"user",content:input}]:input);
-  if(o.images&&o.images.length){
+  if(images&&images.length){
     const blocks=[];
-    for(const img of Array.from(o.images)) blocks.push({type:"image",source:{type:"base64",media_type:img.type||"image/jpeg",data:await blobToBase64(img)}});
+    for(const img of Array.from(images)) blocks.push({type:"image",source:{type:"base64",media_type:img.type||"image/jpeg",data:await blobToBase64(img)}});
     const last=messages[messages.length-1];
     last.content=blocks.concat([{type:"text",text:last.content}]);
   }
+  return messages;
+}
+async function apiPost(body,signal){
+  const key=getKey(); if(!key) throw {code:"no_key"};
   let res;
   try{
-    res=await fetch(API_URL,{method:"POST",signal:o.signal,
+    res=await fetch(API_URL,{method:"POST",signal,
       headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
-      body:JSON.stringify({model:MODELS[tier],max_tokens:o.maxTokens||MAX_OUT[tier],stream:true,messages})});
+      body:JSON.stringify(body)});
   }catch(e){throw (e&&e.name==="AbortError")?{code:"cancelled"}:{code:"network"};}
   if(!res.ok){
     let type="",msg="";
@@ -758,6 +1137,14 @@ async function callClaude(input,o){
     else if(res.status===400) code="invalid_request";
     throw {code,message:msg};
   }
+  return res;
+}
+/* Streaming call: text arrives piece by piece through onText. */
+async function callClaude(input,o){
+  o=o||{};
+  const tier=MODELS[o.modelTier]?o.modelTier:"default";
+  const messages=await buildMessages(input,o.images);
+  const res=await apiPost({model:MODELS[tier],max_tokens:o.maxTokens||MAX_OUT[tier],stream:true,messages},o.signal);
   const reader=res.body.getReader(), dec=new TextDecoder();
   let buf="",text="",stop=null;
   try{
@@ -789,6 +1176,38 @@ async function callClaude(input,o){
   if(!text.trim()) throw {code:"empty_completion"};
   return {text,truncated:stop==="max_tokens"};
 }
+/* Tool loop (not streamed): Claude calls the page's tools, the page answers, until Claude writes its reply. */
+async function callClaudeTools(input,o){
+  const tier=MODELS[o.modelTier]?o.modelTier:"default";
+  const messages=await buildMessages(input,o.images);
+  const tools=o.tools.map(x=>({name:x.name,description:x.description,input_schema:x.input_schema}));
+  const ROUNDS=8; let calls=0;
+  for(let round=0;round<ROUNDS;round++){
+    const last=round===ROUNDS-1;
+    const res=await apiPost({model:MODELS[tier],max_tokens:o.maxTokens||MAX_OUT[tier],messages,tools,tool_choice:{type:last?"none":"auto"}},o.signal);
+    let j;
+    try{j=await res.json();}catch(e){throw (e&&e.name==="AbortError")?{code:"cancelled"}:{code:"network"};}
+    const content=arr(j&&j.content);
+    if(j&&j.stop_reason==="tool_use"&&!last){
+      messages.push({role:"assistant",content});
+      const results=content.filter(b=>b.type==="tool_use").map(b=>{
+        calls++;
+        const tool=o.tools.find(x=>x.name===b.name);
+        try{
+          if(!tool) throw new Error("unknown tool "+b.name);
+          return {type:"tool_result",tool_use_id:b.id,content:JSON.stringify(tool.execute(b.input||{}))};
+        }catch(err){return {type:"tool_result",tool_use_id:b.id,content:"Error: "+String(err&&err.message||err),is_error:true};}
+      });
+      messages.push({role:"user",content:results});
+      continue;
+    }
+    if(j&&j.stop_reason==="refusal") throw {code:"refused"};
+    const text=content.filter(b=>b.type==="text").map(b=>b.text).join("");
+    if(!text.trim()) throw {code:"empty_completion"};
+    return {text,truncated:j.stop_reason==="max_tokens",toolCalls:calls};
+  }
+  throw {code:"upstream_error"};
+}
 /* Reads the JSON value in a reply: whole reply, else a fenced block, else first { or [ to last } or ]. */
 function parseJSON(t){
   t=String(t||"").trim();
@@ -800,7 +1219,9 @@ function parseJSON(t){
   return undefined;
 }
 async function callJSON(input,o){
-  const r=await callClaude(input,o);
+  o=o||{};
+  const r=o.tools&&o.tools.length?await callClaudeTools(input,o):await callClaude(input,o);
+  if(o.meta) o.meta.toolCalls=r.toolCalls||0;
   const v=parseJSON(r.text);
   if(v===undefined) throw {code:"invalid_json",text:r.text};
   return v;
@@ -811,13 +1232,9 @@ function errText(e){
   const c=e&&e.code;
   switch(c){
     case "nothing": return e.message?t("nothingFound")+" "+e.message:t("nothingFound");
-    case "not_granted": case "sampling_disabled": case "capability_disabled": case "not_declared": case "capability_removed": return t("errDenied");
     case "rate_limited": return t("errRate");
-    case "session_expired": return t("errLogin");
     case "image_rejected": return t("errImage");
-    case "images_unavailable": return t("errImagesOff");
     case "refused": return t("errRefused");
-    case "unavailable": return t("errNoAI");
     case "no_key": return t("errNoKey");
     case "bad_key": return t("errBadKey");
     case "no_credit": return t("errCredit");
@@ -833,21 +1250,32 @@ function opts(o){const r={};for(const k in o){if(o[k]!=null) r[k]=o[k];}return r
 /* ---------- prompts ---------- */
 function langDesc(code){const l=LANGS.find(x=>x.code===code)||LANGS[0];return l.en+" ("+l.native+")";}
 function gradeDesc(g){return g?"grade "+g+" (כיתה "+HE_GRADES[g-1]+") in an Israeli school":"an Israeli school class (grade unknown: infer it from the content)";}
-const NOTATION="Math notation: plain text only, with Unicode symbols (× ÷ − ² ³ √ π ≤ ≥ ≠ ° ∠ ∥ ⊥ ≈). Write fractions as a/b and mixed numbers as 2 3/4. Never use LaTeX, Markdown or backslashes.";
-function persona(grade,lang){
-  return "You are a warm, patient math tutor. Your student recently made aliyah to Israel, is in "+gradeDesc(grade)+", and cannot yet read Hebrew well. Write every explanation in "+langDesc(lang)+", in short sentences with simple words suited to the student's age. Use the methods, vocabulary and notation that Israeli schools teach at this level. The student is a child: keep every answer kind, age-appropriate and about school math. If asked about anything unrelated to school, gently decline and bring the student back to the exercise. Never ask for personal information.";
+function regionEn(code){return regionName(code,"en");}
+const NOTATION="Math notation: plain text only, with Unicode symbols (× ÷ − ² ³ √ π ≤ ≥ ≠ ° ∠ ∥ ⊥ ≈). Write fractions as a/b and mixed numbers as 2 3/4. Write decimal numbers with a point, as in Israel (3.5). Never use LaTeX, Markdown or backslashes.";
+const CALC_NOTE="You have an exact calculator tool named \"calculate\". Use it for every number you write: send all the expressions you need, then use its results. Never compute in your head. When you are done, reply with only the final JSON.";
+function persona(grade,lang,origin){
+  return "You are a warm, patient math tutor. Your student recently made aliyah to Israel, is in "+gradeDesc(grade)+", and cannot yet read Hebrew well."+
+    (hasOrigin(origin)?" Before moving to Israel, the student went to school in "+regionEn(origin)+".":"")+
+    " Write every explanation in "+langDesc(lang)+", in short sentences with simple words suited to the student's age. Use the methods, vocabulary and notation that Israeli schools teach at this level. The student is a child: keep every answer kind, age-appropriate and about school math. If asked about anything unrelated to school, gently decline and bring the student back to the exercise. Never ask for personal information.";
+}
+function diffsSpec(origin,L){
+  if(!hasOrigin(origin)) return "";
+  return "- \"differences\": 0 to 2 short notes in "+L+" about Israeli conventions used in this exercise that differ from what the student learned in "+regionEn(origin)+
+    ": for example the decimal separator (Israel writes 3.5), the thousands separator, the way an operation is laid out on paper, a notation, or a word that looks familiar but means something else. Only real differences that matter for this exercise; [] if there are none.\n";
 }
 function sourceText(kind,typed,withImages){
   const page=kind==="lesson"
     ?"a math lesson page (explanations, rules, examples) from the student's Israeli textbook or notebook"
+    :kind==="check"
+    ?"the student's own handwritten work on math exercises from their Israeli school, and possibly the page with the exercise statements"
     :"a page from the student's math notebook, worksheet or textbook";
-  if(withImages) return "The attached photo(s) show "+page+(kind==="lesson"?".":". The questions may be printed or handwritten.")+
+  if(withImages) return "The attached photo(s) show "+page+(kind==="ex"?". The questions may be printed or handwritten.":".")+
     (typed?"\nThe student also typed this text from the page:\n\"\"\"\n"+typed+"\n\"\"\"":"");
   return "Below is the text of "+page+", typed or pasted by the student. It may contain typos, and fractions or formulas may be written on one line.\n\"\"\"\n"+typed+"\n\"\"\"";
 }
 function promptScan(typed,withImages){
   const L=langDesc(settings.lang);
-  return persona(settings.grade,settings.lang)+`
+  return persona(settings.grade,settings.lang,settings.origin)+`
 
 ${sourceText("ex",typed,withImages)}
 
@@ -869,7 +1297,7 @@ Reply with only this JSON object:
 }
 function promptLesson(typed,withImages){
   const L=langDesc(settings.lang);
-  return persona(settings.grade,settings.lang)+`
+  return persona(settings.grade,settings.lang,settings.origin)+`
 
 ${sourceText("lesson",typed,withImages)}
 
@@ -887,16 +1315,25 @@ ${NOTATION}
 Reply with only this JSON object:
 {"title":"","title_hebrew":"","problem":"","key_ideas":[""],"translation":[{"hebrew":"","translation":""}],"example":{"statement":"","steps":[{"title":"","explain":"","math":""}],"answer":""},"check_questions":[{"question":"","answer":""}],"vocabulary":[{"he":"","translit":"","meaning":""}]}`;
 }
-function promptSolve(e,it,withImages){
+function stepsText(steps){return arr(steps).map((s,i)=>(i+1)+". "+s.title+" — "+s.explain+(s.math?" ["+s.math+"]":"")).join("\n");}
+function redoText(r){
+  const map={calc:"a calculation is wrong",read:"the exercise was misread",unclear:"the explanation is not clear",other:"something else is wrong"};
+  const reasons=arr(r.reasons).map(x=>map[x]||x).join("; ")||"no reason given";
+  const prev=r.previous;
+  return "\nThe student flagged the previous explanation of this exercise. What they said: "+reasons+(r.comment?". Their comment: \""+r.comment+"\"":"")+".\n"+
+    (prev?"Previous explanation (find what was wrong and do not repeat it):\n"+stepsText(prev.steps)+"\nPrevious answer: "+prev.answer+"\n":"")+
+    "Re-read the exercise very carefully, check every value, and write a new explanation that is correct and clearer, with smaller steps.\n";
+}
+function promptSolve(e,it,withImages,redo){
   const L=langDesc(e.lang);
-  return persona(e.grade,e.lang)+`
-${withImages?"\nThe photo(s) of the page are attached. Work only on exercise "+it.label+"; use the photo to read any drawing, table or exact value.\n":""}
-Exercise ${it.label}, Hebrew original:
-${it.hebrew}
+  return persona(e.grade,e.lang,e.origin)+`
+${withImages?"\nThe photo(s) of the page are attached. Work only on exercise "+it.label+"; use the photo to read any drawing, table or exact value. If the photos also show the student's own handwritten work, ignore it.\n":""}
+Exercise ${it.label}, Hebrew original${it.edited?" (checked and corrected by the student)":""}:
+${it.hebrew||"(not visible: use the translation)"}
 
 Translation:
 ${it.translation}
-${it.figure?"\nFigure: "+it.figure+"\n":""}
+${it.figure?"\nFigure: "+it.figure+"\n":""}${redo?redoText(redo):""}
 Teach the student how to reach the answer; do not just give it.
 - "goal": in one or two sentences, what the exercise asks, in simple words.
 - "given": the data of the exercise, as short items.
@@ -906,26 +1343,102 @@ Teach the student how to reach the answer; do not just give it.
 - "answer_hebrew": what the student should write in the notebook, in Hebrew, the way an Israeli teacher expects (for a word problem a short full sentence starting with "תשובה:"; for a calculation, the result).
 - "check": one quick way to verify the result.
 - "watch_out": one common mistake to avoid on this kind of exercise.
-Work out the whole solution carefully and double-check every calculation before writing. If the exercise is ambiguous or incomplete, say so in "goal" and solve the most likely reading.
+${diffsSpec(e.origin,L)}Work out the whole solution carefully. ${CALC_NOTE} If the exercise is ambiguous or incomplete, say so in "goal" and solve the most likely reading.
 ${NOTATION}
 
 Reply with only this JSON object:
-{"goal":"","given":[""],"method":{"name":"","hebrew":""},"steps":[{"title":"","explain":"","math":""}],"answer":"","answer_hebrew":"","check":"","watch_out":""}`;
+{"goal":"","given":[""],"method":{"name":"","hebrew":""},"steps":[{"title":"","explain":"","math":""}],"answer":"","answer_hebrew":"","check":"","watch_out":""${hasOrigin(e.origin)?',"differences":[""]':""}}`;
 }
-function stepsText(steps){return steps.map((s,i)=>(i+1)+". "+s.title+" — "+s.explain+(s.math?" ["+s.math+"]":"")).join("\n");}
+function promptRetranslate(e,it,he){
+  const L=langDesc(e.lang);
+  return `You translate school math exercises from Hebrew into ${L} for a child who has just moved to Israel.
+The student corrected the Hebrew text of exercise ${it.label} because the photo had been misread.
+Corrected Hebrew text:
+"""
+${he}
+"""
+Translate it faithfully into ${L}, line by line, keeping the sub-question letters (א, ב, ג…) and every number. Do not explain or solve.
+${NOTATION}
+
+Reply with only this JSON object: {"translation":""}`;
+}
 function subjectText(ctx){
   return ctx.kind==="lesson"
     ? "a lesson titled \""+ctx.title+"\".\nLesson text (translated):\n"+ctx.translation+"\nWorked example: "+ctx.statement
-    : "this exercise.\nHebrew original:\n"+ctx.hebrew+"\nTranslation:\n"+ctx.translation+(ctx.figure?"\nFigure: "+ctx.figure:"");
+    : "this exercise.\nHebrew original:\n"+(ctx.hebrew||"(not visible)")+"\nTranslation:\n"+ctx.translation+(ctx.figure?"\nFigure: "+ctx.figure:"");
 }
 function promptHelp(ctx,i){
   const s=ctx.steps[i];
-  return persona(ctx.grade,ctx.lang)+"\n\nThe student is working on "+subjectText(ctx)+"\n\nThe step-by-step solution they are reading:\n"+stepsText(ctx.steps)+
+  return persona(ctx.grade,ctx.lang,ctx.origin)+"\n\nThe student is working on "+subjectText(ctx)+"\n\nThe step-by-step solution they are reading:\n"+stepsText(ctx.steps)+
     "\n\nThey do not understand step "+(i+1)+" (\""+s.title+"\"). Explain only this step again, more simply: use a concrete everyday comparison or a smaller example with easy numbers, then come back to the exercise. 3 to 6 short sentences. Plain text, no title, no list.\n"+NOTATION;
+}
+function attemptRules(ctx){
+  return persona(ctx.grade,ctx.lang,ctx.origin)+`
+
+The student is trying to solve ${subjectText(ctx)}
+
+They have not seen the solution. Reference solution, for you only (never reveal it and never give a result from it):
+${stepsText(ctx.steps)}
+Final answer: ${ctx.answer}
+
+The student writes ideas, one message at a time. Reply to the latest one in ${langDesc(ctx.lang)}, in 2 to 4 short sentences:
+- say what is right in the idea, if anything;
+- if it is a good step, confirm it and invite the student to write the next step;
+- if it is wrong or unclear, give one small hint (a question, or the name of the notion) that points in the right direction.
+Never give the final answer, never write the result of a calculation the student has not done, and never write the next step for them. Plain text, no Markdown.
+${NOTATION}`;
+}
+function copyRules(L){
+  return `Check the student's work like a kind teacher:
+- Read the handwriting carefully. Use the calculate tool to check every computation the student wrote.
+- "status": "correct" if the final result and the reasoning are right (equivalent forms count, for example 2/4 and 1/2); "error" if there is at least one mistake; "incomplete" if the work stops before the end with no mistake so far; "unreadable" if you cannot read the work.
+- "where": where the FIRST mistake is, in words the student can find on the page (for example "line 3, when you add the denominators"), in ${L}; "" if there is no mistake.
+- "hint": one short question or nudge in ${L} that helps the student find and fix that mistake alone. Never give the correct result, the corrected calculation or the final answer. If the work is correct, a tip on presentation (for example the answer sentence in Hebrew) or "".
+- "good": one specific thing the student did well, in ${L}.`;
+}
+function promptCopyOne(ctx,sol){
+  const L=langDesc(ctx.lang);
+  return persona(ctx.grade,ctx.lang,ctx.origin)+`
+
+The student did this exercise in their notebook and photographed their work (attached).
+Exercise, Hebrew original:
+${ctx.hebrew||"(see the translation)"}
+Translation:
+${ctx.translation}
+${ctx.figure?"Figure: "+ctx.figure+"\n":""}
+Reference solution, for you only (never reveal it):
+${stepsText(sol.steps)}
+Final answer: ${sol.answer}
+
+${copyRules(L)}
+${NOTATION}
+
+Reply with only this JSON object: {"status":"","where":"","hint":"","good":""}`;
+}
+function promptCopyScan(typed,withImages){
+  const L=langDesc(settings.lang);
+  return persona(settings.grade,settings.lang,settings.origin)+`
+
+${sourceText("check",typed,withImages)}
+
+Find each exercise the student worked on (in page order, at most 8) and check the student's work, without giving the answers. First solve each exercise yourself with the calculate tool, then compare with what the student wrote.
+For each exercise, one entry in "items":
+- "label": the exercise number as written, or 1, 2, 3.
+- "hebrew": the Hebrew statement exactly as printed, if it is visible on the photos; otherwise "".
+- "translation": a faithful translation of the statement into ${L}; if the statement is not visible, say in ${L} what the student was computing.
+- "status", "where", "hint", "good": as defined below.
+${copyRules(L)}
+- "topic": the math topic, in ${L}, in a few words.
+- "vocabulary": up to 6 Hebrew math words from the statements that the student must learn, each with "he", "translit" and "meaning" (in ${L}).
+- If you cannot find any student work, return "items": [] and explain why in "problem", in ${L}.
+${NOTATION}
+
+Reply with only this JSON object:
+{"topic":"","problem":"","items":[{"label":"","hebrew":"","translation":"","status":"","where":"","hint":"","good":""}],"vocabulary":[{"he":"","translit":"","meaning":""}]}`;
 }
 function promptSimilar(ctx){
   const L=langDesc(ctx.lang);
-  return persona(ctx.grade,ctx.lang)+`
+  return persona(ctx.grade,ctx.lang,ctx.origin)+`
 
 The student has just studied this exercise:
 ${ctx.hebrew}
@@ -936,7 +1449,7 @@ Create ONE new exercise to practice the same notion at the same level, with diff
 - "translation": its translation into ${L}.
 - "answer": the correct final answer, in ${L}.
 - "steps": 2 to 6 solution steps, each with "title", "explain" and "math", in ${L}.
-Double-check the answer.
+${CALC_NOTE}
 ${NOTATION}
 
 Reply with only this JSON object:
@@ -953,7 +1466,7 @@ ${NOTATION}
 Reply with only this JSON object: {"correct":true,"feedback":"one or two short, encouraging sentences"}`;
 }
 function chatRules(ctx){
-  return persona(ctx.grade,ctx.lang)+"\n\nYou are helping the student with "+subjectText(ctx)+
+  return persona(ctx.grade,ctx.lang,ctx.origin)+"\n\nYou are helping the student with "+subjectText(ctx)+
     (ctx.steps&&ctx.steps.length?"\n\nSolution steps already shown to the student:\n"+stepsText(ctx.steps):"")+
     "\n\nAnswer the student's questions about it briefly (at most 6 short sentences) and guide them to think rather than only giving results. If a question is not about math or school, kindly bring the conversation back to the exercise. Plain text, no Markdown.\n"+NOTATION;
 }
@@ -980,9 +1493,24 @@ function normSolve(r){
   r=r||{}; const m=r.method;
   return {goal:str(r.goal),given:arr(r.given).map(str).filter(Boolean),
     method:{name:typeof m==="string"?m.trim():str(m&&m.name),hebrew:str(m&&m.hebrew)},
-    steps:normSteps(r.steps),answer:str(r.answer),answer_hebrew:str(r.answer_hebrew),check:str(r.check),watch_out:str(r.watch_out)};
+    steps:normSteps(r.steps),answer:str(r.answer),answer_hebrew:str(r.answer_hebrew),check:str(r.check),watch_out:str(r.watch_out),
+    differences:arr(r.differences).map(str).filter(Boolean).slice(0,3)};
 }
 function normSimilar(r){r=r||{};return {hebrew:str(r.hebrew),translation:str(r.translation),answer:str(r.answer),steps:normSteps(r.steps)};}
+const STATUSES=["correct","error","incomplete","unreadable"];
+function normCopy(r){
+  r=r||{}; const s=str(r.status).toLowerCase();
+  return {status:STATUSES.indexOf(s)>=0?s:"unreadable",where:str(r.where),hint:str(r.hint),good:str(r.good)};
+}
+function normCopyScan(r){
+  r=r||{}; const items=[],checks={};
+  arr(r.items).slice(0,8).forEach((it,i)=>{
+    const x={label:str(it&&it.label)||String(i+1),hebrew:str(it&&it.hebrew),translation:str(it&&it.translation),figure:""};
+    if(!x.hebrew&&!x.translation&&!str(it&&it.status)) return;
+    checks[items.length]=normCopy(it); items.push(x);
+  });
+  return {topic:str(r.topic),grade_guess:"",problem:str(r.problem),items,checks,vocabulary:normVocab(r.vocabulary)};
+}
 
 /* ---------- entries & lexicon ---------- */
 const exampleCache={};
@@ -991,7 +1519,7 @@ function exampleEntry(){
   const key=k+"|"+settings.lang;
   if(!exampleCache[key]){
     const s=JSON.parse(JSON.stringify(SAMPLE[k]));
-    exampleCache[key]={id:"example",mode:"ex",date:Date.now(),lang:settings.lang,grade:5,example:true,data:s.data,solved:s.solved};
+    exampleCache[key]={id:"example",mode:"ex",date:Date.now(),lang:settings.lang,grade:5,origin:settings.origin||"",example:true,data:s.data,solved:s.solved,revealed:{},fb:{},copy:{}};
   }
   return exampleCache[key];
 }
@@ -1006,6 +1534,25 @@ function addVocab(v){
   if(added) saveLex();
   return added;
 }
+function makeCtx(e,it,sol){
+  return {kind:"ex",lang:e.lang,grade:e.grade,origin:e.origin||"",hebrew:it.hebrew,translation:it.translation,figure:it.figure,
+    steps:sol?sol.steps:[],answer:sol?sol.answer:"",method:sol?sol.method:null};
+}
+
+/* ---------- parent code ---------- */
+async function hashPin(pin,salt){
+  const s=salt+":"+pin;
+  try{
+    const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+  }catch(e){
+    let x=2166136261; for(let i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619)>>>0;}
+    return "f"+x.toString(16);
+  }
+}
+function pinRec(){const r=store.get(K.pin,null);return r&&r.hash?r:null;}
+async function setPin(pin){const salt=uid();store.set(K.pin,{salt,hash:await hashPin(pin,salt)});}
+async function checkPin(pin){const r=pinRec();if(!r) return false;return (await hashPin(pin,r.salt))===r.hash;}
 
 /* ---------- navigation ---------- */
 let stack=[{name:"home",params:{}}];
@@ -1020,6 +1567,7 @@ function render(){
   screenCtls.clear();
   document.documentElement.lang=uiLang();
   const top=stack[stack.length-1];
+  if(top.name!=="parent") parentUnlocked=false;
   renderBar(top);
   const fn=SCREENS[top.name]||SCREENS.home;
   $("#view").replaceChildren(fn(top.params||{}));
@@ -1049,6 +1597,47 @@ function retryBox(msg,onRetry){
 }
 function trBlock(text){return h("div",{class:"tr"},h("span",{class:"tr-label"},t("translation")),h("p",{class:"tr-text"},mt(text)));}
 function figureBlock(text){return text?h("p",{class:"figure"},h("span",{class:"tr-label"},t("figure")),h("span",{},mt(text))):null;}
+function diffCard(list){
+  if(!list||!list.length) return null;
+  return h("section",{class:"israel"},h("span",{class:"tr-label"},t("diffTitle")),h("ul",{},list.map(d=>h("li",{},mt(d)))));
+}
+
+/* Photos of the page: thumbnails, then a full-screen viewer with zoom. */
+const photoURLs=new Map();
+function photoStrip(entryId){
+  const wrap=h("section",{class:"block",hidden:true});
+  photoDB.get(entryId).then(blobs=>{
+    if(!blobs||!blobs.length) return;
+    let urls=photoURLs.get(entryId);
+    if(!urls){urls=blobs.map(b=>URL.createObjectURL(b));photoURLs.set(entryId,urls);}
+    wrap.replaceChildren(
+      h("div",{class:"nb-head"},h("h2",{class:"sec-title"},t("yourPhoto")),h("span",{class:"fine"},t("photoHint"))),
+      h("div",{class:"photo-strip"},urls.map((u,i)=>h("button",{class:"photo-thumb",onclick:()=>openViewer(urls,i),"aria-label":t("yourPhoto")+" · "+t("pageOf",{i:i+1,n:urls.length})},h("img",{src:u,alt:""})))));
+    wrap.hidden=false;
+  });
+  return wrap;
+}
+function openViewer(urls,start){
+  let i=start||0,z=1;
+  const img=h("img",{alt:t("yourPhoto")});
+  const counter=h("span",{class:"viewer-count"});
+  const opener=document.activeElement;
+  function show(){img.src=urls[i];img.style.width=Math.round(z*100)+"%";counter.textContent=urls.length>1?t("pageOf",{i:i+1,n:urls.length}):"";}
+  function close(){ov.remove();document.removeEventListener("keydown",onKey);document.body.style.overflow="";if(opener&&opener.focus) opener.focus();}
+  function onKey(e){if(e.key==="Escape") close();}
+  const closeBtn=h("button",{class:"icon-btn",onclick:close,"aria-label":t("close"),title:t("close")},icon("x",22));
+  const ov=h("div",{class:"viewer",role:"dialog","aria-modal":"true","aria-label":t("yourPhoto")},
+    h("div",{class:"viewer-bar"},closeBtn,counter,
+      h("div",{class:"viewer-tools"},
+        urls.length>1?h("button",{class:"icon-btn",onclick:()=>{i=(i-1+urls.length)%urls.length;show();},"aria-label":t("prevPage"),title:t("prevPage")},icon("back",22)):null,
+        urls.length>1?h("button",{class:"icon-btn",onclick:()=>{i=(i+1)%urls.length;show();},"aria-label":t("nextPage"),title:t("nextPage")},icon("fwd",22)):null,
+        h("button",{class:"icon-btn",onclick:()=>{z=Math.max(1,z/1.5);show();},"aria-label":t("zoomOut"),title:t("zoomOut")},icon("zoomOut",22)),
+        h("button",{class:"icon-btn",onclick:()=>{z=Math.min(5,z*1.5);show();},"aria-label":t("zoomIn"),title:t("zoomIn")},icon("zoomIn",22)))),
+    h("div",{class:"viewer-scroll"},img));
+  document.addEventListener("keydown",onKey);
+  document.body.append(ov); document.body.style.overflow="hidden";
+  show(); closeBtn.focus();
+}
 
 function wordRow(w,o){
   o=o||{};
@@ -1067,12 +1656,12 @@ function vocabSection(v){
 }
 
 async function helpStep(ctx,i,box,btn){
-  const s=await aiReady; if(!s){toast(t("errNoAI"));return;}
+  const s=await aiReady;
   const ctl=newCtl(); btn.disabled=true; box.hidden=false;
   const p=h("p",{class:"help-text"},t("thinking"));
   box.replaceChildren(h("span",{class:"tr-label"},t("helpTitle")),p);
   try{
-    await s(promptHelp(ctx,i),{cache:false,modelTier:"quick",signal:ctl.signal,onText:u=>p.replaceChildren(mt(u.text))});
+    await s(promptHelp(ctx,i),{modelTier:"quick",signal:ctl.signal,onText:u=>p.replaceChildren(mt(u.text))});
   }catch(e){
     if(e&&e.code==="cancelled") box.hidden=true;
     else p.replaceChildren(e&&e.text?mt(e.text):"",e&&e.text?" ":"",errText(e));
@@ -1139,7 +1728,7 @@ function askView(ctx,id,label){
   const turns=[];
   async function ask(){
     const q=ta.value.trim(); if(!q){ta.focus();return;}
-    const s=await aiReady; if(!s){toast(t("errNoAI"));return;}
+    const s=await aiReady;
     ta.value="";
     log.append(h("div",{class:"msg me"},h("p",{},q)));
     const out=h("p",{},t("thinking"));
@@ -1147,7 +1736,7 @@ function askView(ctx,id,label){
     turns.push({role:"user",content:q});
     const ctl=newCtl(); send.disabled=true;
     try{
-      const r=await s([{role:"user",content:chatRules(ctx)}].concat(turns.slice(-8)),{cache:false,signal:ctl.signal,onText:u=>out.replaceChildren(mt(u.text))});
+      const r=await s([{role:"user",content:chatRules(ctx)}].concat(turns.slice(-8)),{signal:ctl.signal,onText:u=>out.replaceChildren(mt(u.text))});
       turns.push({role:"assistant",content:r.text});
     }catch(e){
       turns.pop();
@@ -1170,7 +1759,7 @@ function similarCard(p,ctx){
   inp.addEventListener("keydown",e=>{if(e.key==="Enter") verify();});
   async function verify(){
     const v=inp.value.trim(); if(!v){inp.focus();return;}
-    const s=await aiReady; if(!s){toast(t("errNoAI"));return;}
+    const s=await aiReady;
     fb.hidden=false; fb.className="feedback"; fb.textContent=t("thinking"); vbtn.disabled=true;
     try{
       const r=await s.json(promptCheck(p,v,ctx.lang),{modelTier:"quick"});
@@ -1190,11 +1779,11 @@ function practiceView(ctx){
   const slot=h("div",{class:"block"});
   const btn=h("button",{class:"btn btn-wide",onclick:gen},icon("pencil"),t("practice"));
   async function gen(){
-    const s=await aiReady; if(!s){toast(t("errNoAI"));return;}
+    const s=await aiReady;
     const ctl=newCtl(); btn.disabled=true;
     slot.replaceChildren(workingView(null,t("thinking"),()=>ctl.abort()));
     try{
-      const p=normSimilar(await s.json(promptSimilar(ctx),{cache:false,signal:ctl.signal}));
+      const p=normSimilar(await s.json(promptSimilar(ctx),{signal:ctl.signal,tools:[CALC_TOOL]}));
       if(!p.hebrew&&!p.translation) throw {code:"empty"};
       slot.replaceChildren(similarCard(p,ctx));
     }catch(e){
@@ -1202,6 +1791,145 @@ function practiceView(ctx){
     }finally{btn.disabled=false;}
   }
   return h("section",{class:"block"},btn,slot);
+}
+
+/* Was this explanation useful? A "no" can ask for a new, more careful explanation. */
+function feedbackView(e,idx,it,onRedo){
+  const votes=ens(e,"fb");
+  const box=h("section",{class:"fb-box","aria-live":"polite"});
+  function record(vote,reasons,comment){
+    votes[idx]=vote; saveEntry(e);
+    if(e.id!=="example"){FB.unshift({date:Date.now(),entry:e.id,idx,label:it.label,topic:e.data.topic||"",vote,reasons,comment});saveFB();}
+  }
+  function thanks(){box.replaceChildren(h("p",{class:"notice"},icon("check",18),t("fbThanks")));}
+  function askVote(){
+    box.replaceChildren(
+      h("span",{class:"fb-q"},t("fbQ")),
+      h("div",{class:"fb-row"},
+        h("button",{class:"btn",onclick:()=>{record("up",[],"");thanks();}},icon("thumbUp",18),t("fbYes")),
+        h("button",{class:"btn",onclick:openDown},icon("thumbDown",18),t("fbNo"))));
+  }
+  function openDown(){
+    const picked=new Set();
+    const chips=[["calc","fbCalc"],["read","fbRead"],["unclear","fbUnclear"],["other","fbOther"]].map(([k,lbl])=>{
+      const b=h("button",{class:"chip-btn","aria-pressed":"false",onclick:()=>{
+        if(picked.has(k)) picked.delete(k); else picked.add(k);
+        b.setAttribute("aria-pressed",String(picked.has(k)));
+      }},t(lbl));
+      return b;
+    });
+    const ta=h("textarea",{id:"fb-"+e.id+"-"+idx,rows:"2",placeholder:t("fbCommentPh"),"aria-label":t("fbCommentPh")});
+    box.replaceChildren(
+      h("span",{class:"fb-q"},t("fbWhat")),
+      h("div",{class:"chip-row"},chips),ta,
+      h("div",{class:"fb-row"},
+        h("button",{class:"btn",onclick:()=>{record("down",[...picked],ta.value.trim());thanks();}},t("fbSend")),
+        onRedo?h("button",{class:"btn btn-primary",onclick:()=>{const rs=[...picked],c=ta.value.trim();record("down",rs,c);onRedo(rs,c);}},t("redo")):null));
+  }
+  if(votes[idx]) thanks(); else askVote();
+  return box;
+}
+
+const STATUS_LABEL={correct:"stCorrect",error:"stError",incomplete:"stIncomplete",unreadable:"stUnreadable"};
+function statusPill(s){return h("span",{class:"pill pill-"+s},icon(s==="correct"?"check":s==="error"?"bulb":"pencil",16),t(STATUS_LABEL[s]||"stUnreadable"));}
+function copyResult(r){
+  return h("div",{class:"copy-res"},
+    statusPill(r.status),
+    r.where?h("div",{class:"res-row"},h("span",{class:"tr-label"},t("where")),h("p",{},mt(r.where))):null,
+    r.hint?h("div",{class:"res-row res-hint"},h("span",{class:"tr-label"},t("hintLabel")),h("p",{},mt(r.hint))):null,
+    r.good?h("div",{class:"res-row res-good"},h("span",{class:"tr-label"},t("good")),h("p",{},mt(r.good))):null);
+}
+/* Check my work, for one exercise: Claude finds the first mistake without giving the answer. */
+function copyCheckView(e,idx,ctx,sol,onResult){
+  const copies=ens(e,"copy");
+  const out=h("div",{class:"block","aria-live":"polite"});
+  const label=h("span",{},t(copies[idx]?"copyAgain":"copyBtn"));
+  const input=h("input",{type:"file",accept:"image/*",multiple:true,id:"copy-"+e.id+"-"+idx,"aria-label":t("copyBtn"),onchange:pick});
+  const btn=h("label",{class:"btn file-btn btn-wide"},icon("camera"),label,input);
+  async function pick(ev){
+    const files=Array.from(ev.target.files||[]).slice(0,3); ev.target.value="";
+    if(!files.length) return;
+    const imgs=[]; for(const f of files){try{imgs.push(await prepImage(f));}catch(_){}}
+    if(!imgs.length){out.replaceChildren(h("p",{class:"alert",role:"alert"},t("errImage")));return;}
+    const s=await aiReady, ctl=newCtl();
+    input.disabled=true; btn.classList.add("is-disabled");
+    out.replaceChildren(workingView(imgs[0].thumb,t("checking"),()=>ctl.abort()));
+    try{
+      const r=normCopy(await s.json(promptCopyOne(ctx,sol),{images:imgs.map(p=>p.blob),signal:ctl.signal,tools:[CALC_TOOL]}));
+      copies[idx]=r; saveEntry(e);
+      out.replaceChildren(copyResult(r));
+      label.textContent=t("copyAgain");
+      if(onResult) onResult(r);
+    }catch(err){out.replaceChildren(err&&err.code==="cancelled"?"":h("p",{class:"alert",role:"alert"},errText(err)));}
+    finally{input.disabled=false;btn.classList.remove("is-disabled");}
+  }
+  if(copies[idx]) out.append(copyResult(copies[idx]));
+  return h("section",{class:"copy-box"},
+    h("h2",{class:"sec-title"},icon("copyCheck",16)," ",t("copyTitle")),
+    h("p",{class:"fine"},t("copySub")),
+    btn,out);
+}
+
+/* Hints first: the student tries, then gets the notion, then the first step, then the full solution. */
+function coachView(e,idx,ctx,sol){
+  const guided=PARENT.helpMode==="guided";
+  let attempts=0,hints=0;
+  const turns=[];
+  const log=h("div",{class:"chat"});
+  const ta=h("textarea",{id:"try-"+e.id+"-"+idx,rows:"2",placeholder:t("tryPh"),"aria-label":t("tryQ")});
+  const tryBtn=h("button",{class:"btn btn-primary",onclick:tryIdea},t("tryCheck"));
+  const hintBox=h("div",{class:"block"});
+  const first=sol.steps[0]||{};
+  const b1=h("button",{class:"btn btn-wide hint-btn",onclick:open1},icon("bulb"),t("hint1"));
+  const b2=h("button",{class:"btn btn-wide hint-btn",onclick:open2},icon("bulb"),t("hint2"));
+  function open1(){
+    if(!b1.isConnected) return;
+    b1.remove(); hints=Math.max(hints,1);
+    hintBox.append(h("div",{class:"hint-card"},
+      h("span",{class:"tr-label"},t("hint1")),
+      h("p",{class:"method-name"},mt(sol.method.name||sol.goal)),
+      sol.method.hebrew?h("p",{class:"method-he",lang:"he",dir:"rtl"},sol.method.hebrew):null));
+    sync();
+  }
+  function open2(){
+    open1(); b2.remove(); hints=2;
+    hintBox.append(h("div",{class:"hint-card"},
+      h("span",{class:"tr-label"},t("hint2")),
+      first.title?h("p",{class:"step-title"},mt(first.title)):null,
+      first.explain?h("p",{},mt(first.explain)):null,
+      first.math?h("div",{class:"math grid-paper"},mt(first.math)):null));
+    sync();
+  }
+  const lockNote=h("p",{class:"fine"},t("lockedSolution"));
+  const fullBtn=h("button",{class:"btn btn-wide"},icon("arrow"),t("fullSolution"));
+  function unlocked(){return !guided||attempts>0||hints>=2||!!ens(e,"copy")[idx];}
+  function sync(){const u=unlocked();fullBtn.disabled=!u;lockNote.hidden=u;}
+  async function tryIdea(){
+    const v=ta.value.trim(); if(!v){ta.focus();return;}
+    const s=await aiReady;
+    ta.value="";
+    log.append(h("div",{class:"msg me"},h("p",{},v)));
+    const out=h("p",{},t("thinking"));
+    log.append(h("div",{class:"msg bot"},out));
+    turns.push({role:"user",content:v});
+    const ctl=newCtl(); tryBtn.disabled=true;
+    try{
+      const r=await s([{role:"user",content:attemptRules(ctx)}].concat(turns.slice(-8)),{modelTier:"quick",signal:ctl.signal,onText:u=>out.replaceChildren(mt(u.text))});
+      turns.push({role:"assistant",content:r.text});
+      attempts++; sync();
+    }catch(err){
+      turns.pop();
+      if(!(err&&err.code==="cancelled")) out.replaceChildren(err&&err.text?mt(err.text):"",err&&err.text?" ":"",errText(err));
+    }finally{tryBtn.disabled=false;}
+  }
+  ta.addEventListener("keydown",ev=>{if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();tryIdea();}});
+  sync();
+  const root=h("section",{class:"coach"},
+    h("h2",{class:"coach-title"},t("tryTitle")),
+    h("p",{class:"tr-text"},t("tryQ")),
+    log,h("div",{class:"ask-row"},ta,tryBtn),
+    hintBox,b1,b2);
+  return {root,sync,fullBtn,lockNote};
 }
 
 /* ---------- screens ---------- */
@@ -1216,15 +1944,21 @@ function settingsStrip(){
 function tile(kind){
   const c={
     ex:{he:"תרגיל",ico:"camera",title:t("tileEx"),sub:t("tileExSub"),cls:"tile tile-main grid-paper",on:()=>go("capture",{mode:"ex"})},
+    check:{he:"בדיקה",ico:"copyCheck",title:t("tileCheck"),sub:t("tileCheckSub"),cls:"tile",on:()=>go("capture",{mode:"check"})},
     lesson:{he:"שיעור",ico:"book",title:t("tileLesson"),sub:t("tileLessonSub"),cls:"tile",on:()=>go("capture",{mode:"lesson"})},
-    lex:{he:"מילון",ico:"words",title:t("tileLex"),sub:t("tileLexSub",{n:LEX.length}),cls:"tile",on:()=>go("lexicon")}
+    lex:{he:"מילון",ico:"words",title:t("tileLex"),sub:t("tileLexSub",{n:LEX.length}),cls:"tile tile-wide",on:()=>go("lexicon")}
   }[kind];
+  if(kind==="lex") return h("button",{class:c.cls,onclick:c.on},
+    h("span",{class:"tile-ico"},icon(c.ico,22)),
+    h("span",{class:"tile-text"},h("span",{class:"tile-title"},c.title),h("span",{class:"tile-sub"},c.sub)),
+    h("span",{class:"tile-he",lang:"he",dir:"rtl","aria-hidden":"true"},c.he));
   return h("button",{class:c.cls,onclick:c.on},
     h("span",{class:"tile-ico"},icon(c.ico,kind==="ex"?26:22)),
     h("span",{class:"tile-he",lang:"he",dir:"rtl","aria-hidden":"true"},c.he),
     h("span",{class:"tile-title"},c.title),
     h("span",{class:"tile-sub"},c.sub));
 }
+const MODE_SCREEN={ex:"exercises",lesson:"lesson",check:"check"};
 function screenHome(){
   const ex=exampleEntry();
   const first=ex.data.items[0].hebrew.split("\n")[0];
@@ -1233,11 +1967,11 @@ function screenHome(){
       h("h1",{class:"today"},t("today")),
       h("p",{class:"today-he",lang:"he",dir:"rtl"},"מה עושים היום?"),
       settingsStrip()),
-    getKey()?null:h("button",{class:"setup",onclick:()=>go("settings")},
+    getKey()?null:h("button",{class:"setup",onclick:()=>go("parent")},
       h("span",{class:"tr-label"},t("setupTitle")),
       h("span",{},t("setupText")),
       h("span",{class:"example-cta"},t("setupCta"),icon("arrow",18))),
-    h("div",{class:"tiles"},tile("ex"),tile("lesson"),tile("lex")),
+    h("div",{class:"tiles"},tile("ex"),tile("check"),tile("lesson"),tile("lex")),
     installEvt?h("button",{class:"btn btn-ghost btn-wide",onclick:async()=>{
       const ev=installEvt; installEvt=null;
       try{await ev.prompt();}catch(e){}
@@ -1250,11 +1984,11 @@ function screenHome(){
     HIST.length?h("section",{class:"block"},
       h("h2",{class:"sec-title"},t("recent")),
       h("ul",{class:"recent-list"},HIST.map(e=>{
-        const d=e.data, lesson=e.mode==="lesson";
-        const name=(lesson?d.title:d.topic)||t(lesson?"modeLesson":"modeEx");
-        const meta=(lesson?t("modeLesson"):t("exFound",{n:arr(d.items).length}))+" · "+fmtDate(e.date);
-        return h("li",{},h("button",{class:"recent-row",onclick:()=>go(lesson?"lesson":"exercises",{id:e.id})},
-          h("span",{class:"recent-ico"},icon(lesson?"book":"pencil",18)),
+        const d=e.data, mode=MODE_SCREEN[e.mode]?e.mode:"ex";
+        const name=(mode==="lesson"?d.title:d.topic)||t({ex:"modeEx",lesson:"modeLesson",check:"modeCheck"}[mode]);
+        const meta=(mode==="lesson"?t("modeLesson"):mode==="check"?t("modeCheck")+" · "+t("exFound",{n:arr(d.items).length}):t("exFound",{n:arr(d.items).length}))+" · "+fmtDate(e.date);
+        return h("li",{},h("button",{class:"recent-row",onclick:()=>go(MODE_SCREEN[mode],{id:e.id})},
+          h("span",{class:"recent-ico"},icon({ex:"pencil",lesson:"book",check:"copyCheck"}[mode],18)),
           h("span",{class:"recent-main"},h("span",{class:"recent-title"},name),h("span",{class:"recent-meta"},meta)),
           icon("arrow",18)));
       }))):null,
@@ -1262,30 +1996,31 @@ function screenHome(){
 }
 
 function screenSettings(){
-  let lang=settings.lang, grade=settings.grade;
-  const langs=h("div",{class:"choices",role:"radiogroup","aria-label":t("langQ")});
-  for(const L of LANGS){
-    langs.append(h("button",{class:"choice",role:"radio","aria-checked":String(L.code===lang),"data-v":L.code,onclick:()=>{
-      lang=L.code; for(const b of langs.children) b.setAttribute("aria-checked",String(b.dataset.v===lang));
-    }},h("span",{class:"choice-main",lang:L.code},L.native),h("span",{class:"choice-sub"},L.en)));
+  let lang=settings.lang, grade=settings.grade, origin=settings.origin||"";
+  function radioGroup(label,items,current,onPick,cls){
+    const g=h("div",{class:cls||"choices",role:"radiogroup","aria-label":label});
+    for(const it of items){
+      g.append(h("button",{class:"choice"+(it.cls?" "+it.cls:""),role:"radio","aria-checked":String(it.v===current),"data-v":String(it.v),onclick:()=>{
+        onPick(it.v); for(const b of g.children) b.setAttribute("aria-checked",String(b.dataset.v===String(it.v)));
+      }},it.kids));
+    }
+    return g;
   }
-  const grades=h("div",{class:"grades",role:"radiogroup","aria-label":t("gradeQ")});
-  HE_GRADES.forEach((g,i)=>{
-    const n=i+1;
-    grades.append(h("button",{class:"choice grade",role:"radio","aria-checked":String(n===grade),"data-v":String(n),onclick:()=>{
-      grade=n; for(const b of grades.children) b.setAttribute("aria-checked",String(Number(b.dataset.v)===grade));
-    }},h("span",{class:"grade-he",lang:"he"},g),h("span",{class:"choice-sub"},gradeLocal(n))));
-  });
-  const keyFirst=!getKey();
+  const langs=radioGroup(t("langQ"),LANGS.map(L=>({v:L.code,kids:[h("span",{class:"choice-main",lang:L.code},L.native),h("span",{class:"choice-sub"},L.en)]})),lang,v=>{lang=v;});
+  const grades=radioGroup(t("gradeQ"),HE_GRADES.map((g,i)=>({v:i+1,cls:"grade",kids:[h("span",{class:"grade-he",lang:"he"},g),h("span",{class:"choice-sub"},gradeLocal(i+1))]})),grade,v=>{grade=v;},"grades");
+  const origins=radioGroup(t("originQ"),ORIGINS.map(c=>({v:c,cls:"choice-sm",kids:[h("span",{class:"choice-main"},regionName(c))]})).concat([{v:"IL",cls:"choice-sm",kids:[h("span",{class:"choice-main"},t("originOther"))]}]),origin,v=>{origin=v;});
   return h("div",{class:"screen"},
     h("h1",{class:"title"},t("settings")),
-    keyFirst?keySection():null,
     h("section",{class:"block"},h("h2",{class:"sec-title"},t("langQ")),langs),
     h("section",{class:"block"},h("h2",{class:"sec-title"},t("gradeQ")),h("p",{class:"fine"},t("gradeHint")),grades),
+    h("section",{class:"block"},h("h2",{class:"sec-title"},t("originQ")),h("p",{class:"fine"},t("originHint")),origins),
     h("button",{class:"btn btn-primary btn-wide btn-big",onclick:()=>{
-      settings={lang,grade}; store.set(K.set,settings); back();
+      settings={lang,grade,origin}; store.set(K.set,settings); back();
     }},t("save")),
-    keyFirst?null:keySection());
+    h("button",{class:"parent-link",onclick:()=>go("parent")},
+      h("span",{class:"parent-ico"},icon("lock",18)),
+      h("span",{class:"recent-main"},h("span",{class:"recent-title"},t("parentSpace")),h("span",{class:"recent-meta"},t("parentSub"))),
+      icon("arrow",18)));
 }
 /* Parent-only: the API key is kept on this device and sent only to api.anthropic.com. */
 function keySection(){
@@ -1305,6 +2040,81 @@ function keySection(){
     h("p",{class:"fine"},t("keyHelp")),
     h("div",{class:"field"},inp,save),show,status);
 }
+function pinInput(id,label){
+  return h("input",{type:"password",id,inputmode:"numeric",pattern:"[0-9]*",maxlength:"4",autocomplete:"off",class:"pin-input","aria-label":label,placeholder:"••••"});
+}
+function screenParent(){
+  const body=h("div",{class:"block"});
+  const root=h("div",{class:"screen"},
+    h("p",{class:"eyebrow"},t("parentLocked")),
+    h("h1",{class:"title"},t("parentSpace")),body);
+  function createForm(isChange){
+    const a=pinInput("pin-new",t("pinCreate")), b=pinInput("pin-confirm",t("pinConfirm"));
+    const msg=h("p",{class:"fine",role:"status"});
+    const saveBtn=h("button",{class:"btn btn-primary btn-wide",onclick:async()=>{
+      if(!/^\d{4}$/.test(a.value)){msg.textContent=t("pinFormat");a.focus();return;}
+      if(a.value!==b.value){msg.textContent=t("pinMismatch");b.value="";b.focus();return;}
+      await setPin(a.value); parentUnlocked=true; toast(t("pinSaved")); showUnlocked();
+    }},t("savePin"));
+    body.replaceChildren(
+      isChange?null:h("p",{class:"tr-text"},t("pinAdvice")),
+      h("label",{class:"field-label",for:"pin-new"},t("pinCreate")),a,
+      h("label",{class:"field-label",for:"pin-confirm"},t("pinConfirm")),b,
+      saveBtn,msg,
+      isChange?h("button",{class:"link-btn",onclick:showUnlocked},t("cancel")):null);
+    focusSoon(a);
+  }
+  function lockForm(){
+    const a=pinInput("pin-enter",t("pinEnter"));
+    const msg=h("p",{class:"fine",role:"status"});
+    let busy=false;
+    async function submit(){
+      if(busy) return; busy=true;
+      const ok=await checkPin(a.value); busy=false;
+      if(ok){parentUnlocked=true;showUnlocked();}
+      else{msg.textContent=t("pinWrong");a.value="";a.focus();}
+    }
+    a.addEventListener("keydown",ev=>{if(ev.key==="Enter") submit();});
+    a.addEventListener("input",()=>{if(/^\d{4}$/.test(a.value)) submit();});
+    const forgot=h("button",{class:"link-btn",onclick:()=>{
+      forgot.replaceWith(h("div",{class:"alert"},
+        h("p",{class:"tr-text"},t("pinResetWarn")),
+        h("div",{class:"fb-row",style:"margin-top:10px"},
+          h("button",{class:"btn",onclick:()=>{store.del(K.pin);setKey("");toast(t("pinResetDone"));createForm(false);}},t("pinResetBtn")),
+          h("button",{class:"btn btn-ghost",onclick:lockForm},t("cancel")))));
+    }},t("pinForgot"));
+    body.replaceChildren(
+      h("label",{class:"field-label",for:"pin-enter"},t("pinEnter")),a,
+      h("button",{class:"btn btn-primary btn-wide",onclick:submit},icon("lock",18),t("unlock")),
+      msg,forgot);
+    focusSoon(a);
+  }
+  function showUnlocked(){
+    const modes=h("div",{class:"choices",role:"radiogroup","aria-label":t("helpModeTitle")});
+    [["free","helpFree","helpFreeSub"],["guided","helpGuided","helpGuidedSub"]].forEach(([k,a,b])=>{
+      modes.append(h("button",{class:"choice",role:"radio","aria-checked":String(PARENT.helpMode===k),"data-v":k,onclick:()=>{
+        PARENT.helpMode=k; saveParent();
+        for(const x of modes.children) x.setAttribute("aria-checked",String(x.dataset.v===k));
+      }},h("span",{class:"choice-main"},t(a)),h("span",{class:"choice-sub"},t(b))));
+    });
+    const up=FB.filter(f=>f.vote==="up").length, down=FB.filter(f=>f.vote==="down");
+    const why=rs=>arr(rs).map(r=>t({calc:"fbCalc",read:"fbRead",unclear:"fbUnclear",other:"fbOther"}[r]||r)).join(", ");
+    body.replaceChildren(
+      keySection(),
+      h("section",{class:"block"},h("h2",{class:"sec-title"},t("helpModeTitle")),modes),
+      h("section",{class:"block"},h("h2",{class:"sec-title"},t("fbTitle")),
+        FB.length?h("p",{class:"tr-text"},t("fbSummary",{up,down:down.length})):h("p",{class:"empty"},t("fbNone")),
+        down.length?h("ul",{class:"fb-list"},down.slice(0,5).map(f=>h("li",{},
+          h("span",{class:"fb-when"},[fmtDate(f.date),f.topic,t("exLabel")+" "+f.label].filter(Boolean).join(" · ")),
+          f.reasons&&f.reasons.length?h("span",{},why(f.reasons)):null,
+          f.comment?h("span",{class:"fb-comment"},f.comment):null))):null),
+      h("div",{class:"fb-row"},
+        h("button",{class:"btn",onclick:()=>createForm(true)},t("pinChange")),
+        h("button",{class:"btn btn-primary",onclick:()=>{parentUnlocked=false;back();}},icon("lock",18),t("lock"))));
+  }
+  if(!pinRec()) createForm(false); else if(parentUnlocked) showUnlocked(); else lockForm();
+  return root;
+}
 
 function readDataURL(blob){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(blob);});}
 function loadImg(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error("decode"));i.src=src;});}
@@ -1315,13 +2125,12 @@ function drawTo(img,maxSide){
   c.getContext("2d").drawImage(img,0,0,c.width,c.height);
   return c;
 }
-/* Returns {blob, thumb}: the file to send to Claude (converted to JPEG when needed) and a small data: preview. */
+/* Returns {blob, thumb}: the file to send to Claude (JPEG, long edge 2000 px) and a small data: preview. */
 async function prepImage(file){
   let img=null;
   try{img=await loadImg(await readDataURL(file));}catch(e){}
   let blob;
   if(img){
-    /* long edge 2000 px: sharp enough for Hebrew print, light enough to send */
     blob=await new Promise((res,rej)=>drawTo(img,2000).toBlob(b=>b?res(b):rej(new Error("encode")),"image/jpeg",.86));
   }else{
     if(imgLimits.mediaTypes.indexOf(file.type)<0||file.size>5000000) throw new Error("unsupported");
@@ -1333,10 +2142,15 @@ async function prepImage(file){
 }
 
 function screenCapture(params){
-  const mode=params.mode==="lesson"?"lesson":"ex";
+  const mode=["lesson","check"].indexOf(params.mode)>=0?params.mode:"ex";
+  const TXT={
+    ex:{eyebrow:"modeEx",title:"capEx",tip:"capTip",go:"analyze",work:"reading"},
+    lesson:{eyebrow:"modeLesson",title:"capLesson",tip:"capTip",go:"analyze",work:"reading"},
+    check:{eyebrow:"modeCheck",title:"capCheck",tip:"capCheckTip",go:"checkBtn",work:"checking"}
+  }[mode];
   const photos=[];
-  const maxN=()=>Math.max(1,Math.min((imgLimits&&imgLimits.maxCount)||3,4));
-  const tip=h("p",{class:"tip"},t("capTip",{n:maxN()}));
+  const maxN=()=>imgLimits.maxCount;
+  const tip=h("p",{class:"tip"},t(TXT.tip,{n:maxN()}));
   const err=h("p",{class:"alert",role:"alert",hidden:true});
   const thumbs=h("div",{class:"thumbs"});
   /* The real file input covers the whole button, so the tap lands on it directly (no scripted click). */
@@ -1352,11 +2166,11 @@ function screenCapture(params){
   const textBox=h("div",{class:"block",hidden:true},h("span",{class:"tr-label"},t("typeText")),ta);
   const typeBtn=h("button",{class:"link-btn",onclick:()=>openText(true)},icon("pencil",16),t("typeText"));
   function openText(focus){textBox.hidden=false;typeBtn.hidden=true;if(focus) ta.focus();}
-  const analyzeBtn=h("button",{class:"btn btn-primary btn-wide btn-big",disabled:true,onclick:start},t("analyze"),icon("arrow"));
+  const analyzeBtn=h("button",{class:"btn btn-primary btn-wide btn-big",disabled:true,onclick:start},t(TXT.go),icon("arrow"));
   const body=h("div",{class:"cap-body"},tip,h("div",{class:"cap-actions"},btnCam,btnGal),thumbs,typeBtn,textBox,err,analyzeBtn,h("p",{class:"fine"},t("privacy")));
   const root=h("div",{class:"screen"},
-    h("p",{class:"eyebrow"},mode==="lesson"?t("modeLesson"):t("modeEx")),
-    h("h1",{class:"title"},mode==="lesson"?t("capLesson"):t("capEx")),
+    h("p",{class:"eyebrow"},t(TXT.eyebrow)),
+    h("h1",{class:"title"},t(TXT.title)),
     body);
   function showErr(m){err.textContent=m||"";err.hidden=!m;}
   function sync(){
@@ -1377,49 +2191,80 @@ function screenCapture(params){
     }
     input.value="";
     sync();
-    if(photos.length&&imgLimits===null){showErr(t("errImagesOff"));openText(false);}
   }
   async function start(){
     showErr("");
-    const s=await aiReady; if(!s){showErr(t("errNoAI"));return;}
+    const s=await aiReady;
     const text=ta.value.trim();
-    const withImages=photos.length>0&&imgLimits!==null;
-    if(!withImages&&!text){showErr(t("errImagesOff"));openText(true);return;}
+    const withImages=photos.length>0;
+    if(!withImages&&!text){openText(true);return;}
     const ctl=newCtl();
     body.hidden=true;
-    const work=workingView(withImages&&photos[0]?photos[0].thumb:"",t("reading"),()=>ctl.abort());
+    const work=workingView(withImages&&photos[0]?photos[0].thumb:"",t(TXT.work),()=>ctl.abort());
     root.append(work);
     try{
-      const prompt=mode==="lesson"?promptLesson(text,withImages):promptScan(text,withImages);
-      const raw=await s.json(prompt,opts({images:withImages?photos.map(p=>p.blob):null,signal:ctl.signal,modelTier:"default"}));
-      const data=mode==="lesson"?normLesson(raw):normScan(raw);
+      const prompt=mode==="lesson"?promptLesson(text,withImages):mode==="check"?promptCopyScan(text,withImages):promptScan(text,withImages);
+      const raw=await s.json(prompt,opts({images:withImages?photos.map(p=>p.blob):null,signal:ctl.signal,tools:mode==="check"?[CALC_TOOL]:null}));
+      const data=mode==="lesson"?normLesson(raw):mode==="check"?normCopyScan(raw):normScan(raw);
       const empty=mode==="lesson"?(!data.translation.length&&!data.key_ideas.length):!data.items.length;
       if(empty) throw {code:"nothing",message:data.problem};
-      const entry={id:uid(),mode,date:Date.now(),lang:settings.lang,grade:settings.grade,data,solved:{}};
+      const copy=mode==="check"?data.checks:{};
+      delete data.checks;
+      const entry={id:uid(),mode,date:Date.now(),lang:settings.lang,grade:settings.grade,origin:settings.origin||"",data,solved:{},revealed:{},fb:{},copy};
       HIST.unshift(entry); HIST=HIST.slice(0,15); saveHist();
-      if(withImages) sessionImages.set(entry.id,photos.map(p=>p.blob));
+      if(withImages) await photoDB.put(entry.id,photos.map(p=>p.blob));
+      photoDB.keep(HIST.map(x=>x.id));
       const added=addVocab(data.vocabulary);
-      go(mode==="lesson"?"lesson":"exercises",{id:entry.id},true);
+      go(MODE_SCREEN[mode],{id:entry.id},true);
       if(added) toast(t("addedN",{n:added}));
     }catch(e){
       work.remove(); body.hidden=false;
       if(e&&e.code==="cancelled") return;
-      if(e&&e.code==="images_unavailable"){imgLimits=null;openText(true);}
       showErr(errText(e));
     }
   }
-  aiReady.then(s=>{
-    if(!root.isConnected) return;
-    tip.textContent=t("capTip",{n:maxN()});
-    if(!s) showErr(t("errNoAI"));
-    else if(!getKey()) showErr(t("errNoKey"));
-    else if(imgLimits===null){showErr(t("errImagesOff"));openText(false);}
-  });
+  if(!getKey()) showErr(t("errNoKey"));
   return root;
 }
 
 function notFound(){return h("div",{class:"screen"},h("p",{class:"empty"},t("notFound")),h("button",{class:"btn btn-primary",onclick:home},"Targil"));}
 
+/* One exercise card; the Hebrew text can be corrected, then it is translated again. */
+function exCard(e,it,i){
+  const li=h("li",{class:"ex-card"});
+  const head=()=>h("div",{class:"ex-head"},h("span",{},t("exLabel")+" "+it.label),h("span",{class:"he-inline",lang:"he",dir:"rtl"},"תרגיל "+it.label));
+  function view(){
+    li.replaceChildren(head(),
+      it.hebrew?heBlock(it.hebrew):h("p",{class:"fine"},t("noStatement")),
+      e.example?null:h("button",{class:"link-btn",onclick:edit},icon("pencil",16),t("editText")),
+      trBlock(it.translation),
+      figureBlock(it.figure),
+      (it.hebrew||it.translation)?h("button",{class:"btn btn-wide"+(e.solved[i]?"":" btn-primary"),onclick:()=>go("solve",{id:e.id,idx:i})},e.solved[i]?t("reviewBtn"):t("explainBtn"),icon("arrow",18)):null);
+  }
+  function edit(){
+    const ta=h("textarea",{id:"edit-"+e.id+"-"+i,rows:String(Math.max(3,it.hebrew.split("\n").length+1)),dir:"rtl",lang:"he",class:"he-edit","aria-label":t("editText")});
+    ta.value=it.hebrew;
+    const status=h("p",{class:"fine",role:"status"});
+    const save=h("button",{class:"btn btn-primary",onclick:async()=>{
+      const v=ta.value.trim();
+      if(!v||v===it.hebrew){view();return;}
+      save.disabled=true; status.textContent=t("retranslating");
+      try{
+        const s=await aiReady;
+        const r=await s.json(promptRetranslate(e,it,v),{modelTier:"quick",maxTokens:2000});
+        it.hebrew=v; it.translation=str(r&&r.translation)||it.translation; it.edited=true;
+        delete e.solved[i]; delete ens(e,"revealed")[i]; delete ens(e,"fb")[i]; delete ens(e,"copy")[i];
+        saveEntry(e); view(); toast(t("textUpdated"));
+      }catch(err){status.textContent=errText(err);save.disabled=false;}
+    }},t("saveText"));
+    li.replaceChildren(head(),
+      h("label",{class:"tr-label",for:"edit-"+e.id+"-"+i},t("editText")),ta,
+      h("div",{class:"fb-row"},save,h("button",{class:"btn btn-ghost",onclick:view},t("cancel"))),status);
+    focusSoon(ta);
+  }
+  view();
+  return li;
+}
 function screenExercises(params){
   const e=getEntry(params.id); if(!e) return notFound();
   const d=e.data;
@@ -1429,29 +2274,46 @@ function screenExercises(params){
       e.example?h("p",{class:"fine"},t("exampleNote")):null,
       h("h1",{class:"title"},d.topic||t("modeEx"))),
     h("p",{class:"meta"},t("exFound",{n:d.items.length}),d.grade_guess?[" · ",h("span",{class:"he-inline",lang:"he",dir:"rtl"},d.grade_guess)]:null),
-    h("ol",{class:"ex-list"},d.items.map((it,i)=>h("li",{class:"ex-card"},
-      h("div",{class:"ex-head"},h("span",{},t("exLabel")+" "+it.label),h("span",{class:"he-inline",lang:"he",dir:"rtl"},"תרגיל "+it.label)),
-      heBlock(it.hebrew),
-      trBlock(it.translation),
-      figureBlock(it.figure),
-      h("button",{class:"btn btn-wide"+(e.solved[i]?"":" btn-primary"),onclick:()=>go("solve",{id:e.id,idx:i})},e.solved[i]?t("reviewBtn"):t("explainBtn"),icon("arrow",18))))),
+    e.example?null:photoStrip(e.id),
+    e.example?null:h("div",{class:"callout"},h("span",{class:"tr-label"},t("readCheckTitle")),h("p",{},t("readCheck"))),
+    h("ol",{class:"ex-list"},d.items.map((it,i)=>exCard(e,it,i))),
     d.vocabulary.length?vocabSection(d.vocabulary):null,
     h("button",{class:"btn btn-ghost btn-wide",onclick:()=>go("capture",{mode:"ex"})},icon("camera"),t("another")));
 }
 
-function solutionView(e,it,sol){
-  const ctx={kind:"ex",lang:e.lang,grade:e.grade,hebrew:it.hebrew,translation:it.translation,figure:it.figure,steps:sol.steps,answer:sol.answer};
-  const ans=answerReveal(sol);
-  ctx.onAllShown=()=>ans.promote();
-  return h("div",{class:"screen",style:"padding-top:0"},
+function solutionView(e,idx,it,sol,onRedo){
+  const ctx=makeCtx(e,it,sol);
+  const revealed=ens(e,"revealed");
+  const head=[
     sol.goal?h("div",{class:"callout"},h("span",{class:"tr-label"},t("goal")),h("p",{class:"tr-text"},mt(sol.goal))):null,
     sol.given.length?h("section",{class:"block"},h("h2",{class:"sec-title"},t("given")),h("ul",{class:"given"},sol.given.map(g=>h("li",{},mt(g))))):null,
-    sol.method.name?h("section",{class:"block"},h("h2",{class:"sec-title"},t("method")),h("p",{class:"method-name"},mt(sol.method.name)),sol.method.hebrew?h("p",{class:"method-he",lang:"he",dir:"rtl"},sol.method.hebrew):null):null,
-    stepsView(sol.steps,ctx),
-    ans,
-    h("hr",{class:"divider"}),
-    practiceView(ctx),
-    askView(ctx,"ask-"+e.id+"-"+it.label,t("ask")));
+    diffCard(sol.differences)].filter(Boolean);
+  function fullParts(){
+    const ans=answerReveal(sol);
+    ctx.onAllShown=()=>ans.promote();
+    return [
+      sol.method.name?h("section",{class:"block"},h("h2",{class:"sec-title"},t("method")),h("p",{class:"method-name"},mt(sol.method.name)),sol.method.hebrew?h("p",{class:"method-he",lang:"he",dir:"rtl"},sol.method.hebrew):null):null,
+      sol.verified?h("p",{class:"notice"},icon("check",18),t("calcVerified")):null,
+      stepsView(sol.steps,ctx),
+      ans,
+      feedbackView(e,idx,it,onRedo),
+      copyCheckView(e,idx,ctx,sol),
+      h("hr",{class:"divider"}),
+      practiceView(ctx),
+      askView(ctx,"ask-"+e.id+"-"+idx,t("ask"))].filter(Boolean);
+  }
+  const root=h("div",{class:"screen",style:"padding-top:0"},head);
+  if(revealed[idx]){root.append(...fullParts());return root;}
+  const coach=coachView(e,idx,ctx,sol);
+  const wrap=h("div",{class:"block"},coach.root,copyCheckView(e,idx,ctx,sol,()=>coach.sync()),coach.lockNote,coach.fullBtn);
+  coach.fullBtn.addEventListener("click",()=>{
+    revealed[idx]=true; saveEntry(e);
+    const parts=fullParts();
+    wrap.replaceWith(...parts);
+    smoothTo(parts[0]);
+  });
+  root.append(wrap);
+  return root;
 }
 
 function screenSolve(params){
@@ -1461,32 +2323,55 @@ function screenSolve(params){
   const root=h("div",{class:"screen"},
     h("p",{class:"eyebrow"},e.data.topic||t("modeEx")),
     h("h1",{class:"title"},t("exLabel")+" "+it.label),
-    heBlock(it.hebrew),trBlock(it.translation),figureBlock(it.figure),area);
-  async function load(){
+    it.hebrew?heBlock(it.hebrew):null,trBlock(it.translation),figureBlock(it.figure),
+    e.example?null:photoStrip(e.id),
+    area);
+  function onRedo(reasons,comment){load({reasons,comment,previous:e.solved[idx]});smoothTo(area);}
+  async function load(redo){
     const s=await aiReady;
-    if(!s){area.replaceChildren(h("p",{class:"alert",role:"alert"},aiState==="denied"?t("errDenied"):t("errNoAI")));return;}
     const ctl=newCtl();
-    area.replaceChildren(workingView(null,t("solving"),()=>ctl.abort()));
+    area.replaceChildren(workingView(null,t(redo?"redoing":"solving"),()=>ctl.abort()));
     try{
-      const imgs=sessionImages.get(e.id);
-      const raw=await s.json(promptSolve(e,it,!!imgs),opts({images:imgs,signal:ctl.signal,modelTier:"default"}));
+      const imgs=e.example?null:await photoDB.get(e.id);
+      const meta={};
+      const raw=await s.json(promptSolve(e,it,!!(imgs&&imgs.length),redo),opts({images:imgs&&imgs.length?imgs:null,signal:ctl.signal,modelTier:redo?"complex":"default",tools:[CALC_TOOL],meta}));
       const sol=normSolve(raw);
       if(!sol.steps.length) throw {code:"empty"};
-      e.solved[idx]=sol; saveEntry(e);
-      area.replaceChildren(solutionView(e,it,sol));
+      sol.verified=meta.toolCalls>0;
+      e.solved[idx]=sol;
+      if(redo){ens(e,"revealed")[idx]=true;delete ens(e,"fb")[idx];}
+      saveEntry(e);
+      area.replaceChildren(solutionView(e,idx,it,sol,onRedo));
     }catch(err){
-      if(err&&(err.code==="not_granted"||err.code==="sampling_disabled")) aiState="denied";
-      area.replaceChildren(retryBox(err&&err.code==="cancelled"?"":errText(err),load));
+      area.replaceChildren(retryBox(err&&err.code==="cancelled"?"":errText(err),()=>load(redo)));
     }
   }
-  if(e.solved[idx]) area.append(solutionView(e,it,e.solved[idx])); else load();
+  if(e.solved[idx]) area.append(solutionView(e,idx,it,e.solved[idx],onRedo)); else load();
   return root;
+}
+
+function screenCheck(params){
+  const e=getEntry(params.id); if(!e) return notFound();
+  const d=e.data, copies=ens(e,"copy");
+  return h("div",{class:"screen"},
+    h("p",{class:"eyebrow"},t("modeCheck")),
+    h("h1",{class:"title"},d.topic||t("modeCheck")),
+    h("p",{class:"meta"},t("checkFound",{n:d.items.length})),
+    photoStrip(e.id),
+    h("ol",{class:"ex-list"},d.items.map((it,i)=>h("li",{class:"ex-card"},
+      h("div",{class:"ex-head"},h("span",{},t("exLabel")+" "+it.label),h("span",{class:"he-inline",lang:"he",dir:"rtl"},"תרגיל "+it.label)),
+      copies[i]?copyResult(copies[i]):null,
+      it.hebrew?heBlock(it.hebrew):null,
+      it.translation?trBlock(it.translation):null,
+      (it.hebrew||it.translation)?h("button",{class:"btn btn-wide",onclick:()=>go("solve",{id:e.id,idx:i})},e.solved[i]?t("reviewBtn"):t("explainBtn"),icon("arrow",18)):null))),
+    d.vocabulary.length?vocabSection(d.vocabulary):null,
+    h("button",{class:"btn btn-primary btn-wide",onclick:()=>go("capture",{mode:"check"})},icon("camera"),t("checkAnother")));
 }
 
 function screenLesson(params){
   const e=getEntry(params.id); if(!e) return notFound();
   const d=e.data;
-  const ctx={kind:"lesson",lang:e.lang,grade:e.grade,title:d.title,
+  const ctx={kind:"lesson",lang:e.lang,grade:e.grade,origin:e.origin||"",title:d.title,
     hebrew:d.translation.map(p=>p.hebrew).join("\n").slice(0,4000),
     translation:d.translation.map(p=>p.translation).join("\n").slice(0,4000),
     statement:d.example.statement,steps:d.example.steps,answer:d.example.answer};
@@ -1494,6 +2379,7 @@ function screenLesson(params){
     h("p",{class:"eyebrow"},t("modeLesson")),
     h("h1",{class:"title"},d.title||t("modeLesson")),
     d.title_hebrew?h("p",{class:"title-he",lang:"he",dir:"rtl"},d.title_hebrew):null,
+    photoStrip(e.id),
     d.key_ideas.length?h("section",{class:"block"},h("h2",{class:"sec-title"},t("keyIdeas")),h("ul",{class:"ideas"},d.key_ideas.map(k=>h("li",{},mt(k))))):null,
     d.translation.length?h("section",{class:"block"},h("h2",{class:"sec-title"},t("translation")),
       h("div",{class:"pairs"},d.translation.map(p=>h("div",{class:"pair"},p.hebrew?heBlock(p.hebrew):null,h("p",{class:"tr-text"},mt(p.translation)))))):null,
@@ -1530,7 +2416,7 @@ function screenLexicon(){
   return root;
 }
 
-const SCREENS={home:screenHome,settings:screenSettings,capture:screenCapture,exercises:screenExercises,solve:screenSolve,lesson:screenLesson,lexicon:screenLexicon};
+const SCREENS={home:screenHome,settings:screenSettings,parent:screenParent,capture:screenCapture,exercises:screenExercises,solve:screenSolve,check:screenCheck,lesson:screenLesson,lexicon:screenLexicon};
 
 /* install to home screen (Chrome on Android) */
 window.addEventListener("beforeinstallprompt",e=>{
@@ -1546,6 +2432,7 @@ if("serviceWorker" in navigator){
 }
 render();
 })();
+
 </script>
 </body>
 </html>
