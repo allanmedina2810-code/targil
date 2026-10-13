@@ -1,7 +1,7 @@
 /* Targil service worker: keeps the app shell available offline.
    Network first, so a new version is picked up as soon as the phone is online.
    Calls to the Claude API and to Google Fonts are never touched. */
-const CACHE = "targil-v2";
+const CACHE = "targil-v3";
 const SHELL = [
   "./",
   "./index.html",

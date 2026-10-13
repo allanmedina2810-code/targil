@@ -669,6 +669,7 @@ en:{
 /* ---------- interface text added in v2 (merged into UI) ---------- */
 const UI2={
 fr:{
+  qualityTitle:"Coût et qualité",qualityEco:"Économique",qualityEcoSub:"Haiku explique, Sonnet lit les photos et les copies. Environ 1 à 2 centimes par exercice.",qualityMax:"Qualité maximale",qualityMaxSub:"Sonnet pour tout. Environ 5 centimes par exercice.",
   tileCheck:"Vérifier ma copie",tileCheckSub:"Je trouve la première erreur",
   modeCheck:"Ma copie",capCheck:"Photographie ta copie",
   capCheckTip:"Prends la feuille avec tes calculs, bien à plat. Ajoute la page de l'énoncé si elle est ailleurs. Jusqu'à {n} photos.",
@@ -700,6 +701,7 @@ fr:{
   errNoKey:"Aucune clé API n'est enregistrée. Un parent doit l'ajouter dans l'espace parent."
 },
 en:{
+  qualityTitle:"Cost and quality",qualityEco:"Economy",qualityEcoSub:"Haiku explains; Sonnet reads photos and work. About 1–2 cents per exercise.",qualityMax:"Maximum quality",qualityMaxSub:"Sonnet for everything. About 5 cents per exercise.",
   tileCheck:"Check my work",tileCheckSub:"I find the first mistake",
   modeCheck:"My work",capCheck:"Snap your work",
   capCheckTip:"Photograph the sheet with your working, flat. Add the page with the exercise if it is somewhere else. Up to {n} photos.",
@@ -731,6 +733,7 @@ en:{
   errNoKey:"No API key is saved. A parent needs to add it in the parent area."
 },
 ru:{
+  qualityTitle:"Стоимость и качество",qualityEco:"Экономный",qualityEcoSub:"Haiku объясняет, Sonnet читает фото и работы. Около 1–2 центов за задание.",qualityMax:"Максимальное качество",qualityMaxSub:"Sonnet для всего. Около 5 центов за задание.",
   tileCheck:"Проверить тетрадь",tileCheckSub:"Найду первую ошибку",
   modeCheck:"Моя работа",capCheck:"Сфотографируй свою работу",
   capCheckTip:"Сфотографируй лист со своими вычислениями, ровно. Если условие на другой странице, добавь и её. До {n} фото.",
@@ -762,6 +765,7 @@ ru:{
   errNoKey:"API-ключ не сохранён. Родителю нужно добавить его в разделе для родителей."
 },
 uk:{
+  qualityTitle:"Вартість і якість",qualityEco:"Економний",qualityEcoSub:"Haiku пояснює, Sonnet читає фото й роботи. Близько 1–2 центів за завдання.",qualityMax:"Максимальна якість",qualityMaxSub:"Sonnet для всього. Близько 5 центів за завдання.",
   tileCheck:"Перевірити зошит",tileCheckSub:"Знайду першу помилку",
   modeCheck:"Моя робота",capCheck:"Сфотографуй свою роботу",
   capCheckTip:"Сфотографуй аркуш зі своїми обчисленнями, рівно. Якщо умова на іншій сторінці, додай і її. До {n} фото.",
@@ -793,6 +797,7 @@ uk:{
   errNoKey:"API-ключ не збережено. Батькам потрібно додати його в розділі для батьків."
 },
 es:{
+  qualityTitle:"Coste y calidad",qualityEco:"Económico",qualityEcoSub:"Haiku explica; Sonnet lee las fotos y los trabajos. Unos 1–2 céntimos por ejercicio.",qualityMax:"Calidad máxima",qualityMaxSub:"Sonnet para todo. Unos 5 céntimos por ejercicio.",
   tileCheck:"Revisar mi cuaderno",tileCheckSub:"Encuentro el primer error",
   modeCheck:"Mi trabajo",capCheck:"Fotografía tu trabajo",
   capCheckTip:"Fotografía la hoja con tus cálculos, bien plana. Si el enunciado está en otra página, añádela también. Hasta {n} fotos.",
@@ -837,7 +842,7 @@ const arr=x=>Array.isArray(x)?x:[];
 const str=x=>typeof x==="string"?x.trim():(x==null||typeof x==="object"?"":String(x));
 let settings=Object.assign({lang:"fr",grade:null,origin:""},store.get(K.set,{})||{});
 if(!LANGS.some(l=>l.code===settings.lang)) settings.lang="fr";
-let PARENT=Object.assign({helpMode:"free"},store.get(K.parent,{})||{});
+let PARENT=Object.assign({helpMode:"free",quality:"eco"},store.get(K.parent,{})||{});
 let HIST=arr(store.get(K.hist,[]));
 let LEX=arr(store.get(K.lex,[]));
 let FB=arr(store.get(K.fb,[]));
@@ -1092,7 +1097,13 @@ const CALC_TOOL={
 /* ---------- Claude API, called directly from the device with the parent's API key ---------- */
 const API_URL="https://api.anthropic.com/v1/messages";
 const MODELS={default:"claude-sonnet-5-5",complex:"claude-opus-5-5",quick:"claude-haiku-5-5"};
-const MAX_OUT={default:16000,complex:16000,quick:3000};
+const MAX_OUT={default:16000,complex:16000,quick:8000};
+/* Which model does which job. Economy: Haiku explains, Sonnet reads photos and the student's work.
+   Maximum quality: Sonnet for everything. Opus is not used. */
+function tier(task){
+  if(PARENT.quality==="max") return "default";
+  return {read:"default",copy:"default",redo:"default"}[task]||"quick";
+}
 function getKey(){return str(store.get(K.key,""));}
 function setKey(v){if(v) store.set(K.key,v); else store.del(K.key);}
 let installEvt=null;
@@ -1661,7 +1672,7 @@ async function helpStep(ctx,i,box,btn){
   const p=h("p",{class:"help-text"},t("thinking"));
   box.replaceChildren(h("span",{class:"tr-label"},t("helpTitle")),p);
   try{
-    await s(promptHelp(ctx,i),{modelTier:"quick",signal:ctl.signal,onText:u=>p.replaceChildren(mt(u.text))});
+    await s(promptHelp(ctx,i),{modelTier:tier("help"),signal:ctl.signal,onText:u=>p.replaceChildren(mt(u.text))});
   }catch(e){
     if(e&&e.code==="cancelled") box.hidden=true;
     else p.replaceChildren(e&&e.text?mt(e.text):"",e&&e.text?" ":"",errText(e));
@@ -1736,7 +1747,7 @@ function askView(ctx,id,label){
     turns.push({role:"user",content:q});
     const ctl=newCtl(); send.disabled=true;
     try{
-      const r=await s([{role:"user",content:chatRules(ctx)}].concat(turns.slice(-8)),{signal:ctl.signal,onText:u=>out.replaceChildren(mt(u.text))});
+      const r=await s([{role:"user",content:chatRules(ctx)}].concat(turns.slice(-8)),{modelTier:tier("chat"),signal:ctl.signal,onText:u=>out.replaceChildren(mt(u.text))});
       turns.push({role:"assistant",content:r.text});
     }catch(e){
       turns.pop();
@@ -1762,7 +1773,7 @@ function similarCard(p,ctx){
     const s=await aiReady;
     fb.hidden=false; fb.className="feedback"; fb.textContent=t("thinking"); vbtn.disabled=true;
     try{
-      const r=await s.json(promptCheck(p,v,ctx.lang),{modelTier:"quick"});
+      const r=await s.json(promptCheck(p,v,ctx.lang),{modelTier:tier("check")});
       const ok=!!(r&&(r.correct===true||r.correct==="true"));
       fb.className="feedback "+(ok?"ok":"no");
       fb.replaceChildren(h("strong",{},ok?t("right"):t("notYet")),r&&r.feedback?" ":"",mt(str(r&&r.feedback)));
@@ -1783,7 +1794,7 @@ function practiceView(ctx){
     const ctl=newCtl(); btn.disabled=true;
     slot.replaceChildren(workingView(null,t("thinking"),()=>ctl.abort()));
     try{
-      const p=normSimilar(await s.json(promptSimilar(ctx),{signal:ctl.signal,tools:[CALC_TOOL]}));
+      const p=normSimilar(await s.json(promptSimilar(ctx),{modelTier:tier("similar"),signal:ctl.signal,tools:[CALC_TOOL]}));
       if(!p.hebrew&&!p.translation) throw {code:"empty"};
       slot.replaceChildren(similarCard(p,ctx));
     }catch(e){
@@ -1855,7 +1866,7 @@ function copyCheckView(e,idx,ctx,sol,onResult){
     input.disabled=true; btn.classList.add("is-disabled");
     out.replaceChildren(workingView(imgs[0].thumb,t("checking"),()=>ctl.abort()));
     try{
-      const r=normCopy(await s.json(promptCopyOne(ctx,sol),{images:imgs.map(p=>p.blob),signal:ctl.signal,tools:[CALC_TOOL]}));
+      const r=normCopy(await s.json(promptCopyOne(ctx,sol),{images:imgs.map(p=>p.blob),signal:ctl.signal,modelTier:tier("copy"),tools:[CALC_TOOL]}));
       copies[idx]=r; saveEntry(e);
       out.replaceChildren(copyResult(r));
       label.textContent=t("copyAgain");
@@ -1914,7 +1925,7 @@ function coachView(e,idx,ctx,sol){
     turns.push({role:"user",content:v});
     const ctl=newCtl(); tryBtn.disabled=true;
     try{
-      const r=await s([{role:"user",content:attemptRules(ctx)}].concat(turns.slice(-8)),{modelTier:"quick",signal:ctl.signal,onText:u=>out.replaceChildren(mt(u.text))});
+      const r=await s([{role:"user",content:attemptRules(ctx)}].concat(turns.slice(-8)),{modelTier:tier("hint"),signal:ctl.signal,onText:u=>out.replaceChildren(mt(u.text))});
       turns.push({role:"assistant",content:r.text});
       attempts++; sync();
     }catch(err){
@@ -2097,11 +2108,19 @@ function screenParent(){
         for(const x of modes.children) x.setAttribute("aria-checked",String(x.dataset.v===k));
       }},h("span",{class:"choice-main"},t(a)),h("span",{class:"choice-sub"},t(b))));
     });
+    const quality=h("div",{class:"choices",role:"radiogroup","aria-label":t("qualityTitle")});
+    [["eco","qualityEco","qualityEcoSub"],["max","qualityMax","qualityMaxSub"]].forEach(([k,a,b])=>{
+      quality.append(h("button",{class:"choice",role:"radio","aria-checked":String(PARENT.quality===k),"data-v":k,onclick:()=>{
+        PARENT.quality=k; saveParent();
+        for(const x of quality.children) x.setAttribute("aria-checked",String(x.dataset.v===k));
+      }},h("span",{class:"choice-main"},t(a)),h("span",{class:"choice-sub"},t(b))));
+    });
     const up=FB.filter(f=>f.vote==="up").length, down=FB.filter(f=>f.vote==="down");
     const why=rs=>arr(rs).map(r=>t({calc:"fbCalc",read:"fbRead",unclear:"fbUnclear",other:"fbOther"}[r]||r)).join(", ");
     body.replaceChildren(
       keySection(),
       h("section",{class:"block"},h("h2",{class:"sec-title"},t("helpModeTitle")),modes),
+      h("section",{class:"block"},h("h2",{class:"sec-title"},t("qualityTitle")),quality),
       h("section",{class:"block"},h("h2",{class:"sec-title"},t("fbTitle")),
         FB.length?h("p",{class:"tr-text"},t("fbSummary",{up,down:down.length})):h("p",{class:"empty"},t("fbNone")),
         down.length?h("ul",{class:"fb-list"},down.slice(0,5).map(f=>h("li",{},
@@ -2204,7 +2223,7 @@ function screenCapture(params){
     root.append(work);
     try{
       const prompt=mode==="lesson"?promptLesson(text,withImages):mode==="check"?promptCopyScan(text,withImages):promptScan(text,withImages);
-      const raw=await s.json(prompt,opts({images:withImages?photos.map(p=>p.blob):null,signal:ctl.signal,tools:mode==="check"?[CALC_TOOL]:null}));
+      const raw=await s.json(prompt,opts({images:withImages?photos.map(p=>p.blob):null,signal:ctl.signal,modelTier:tier(mode==="check"?"copy":"read"),tools:mode==="check"?[CALC_TOOL]:null}));
       const data=mode==="lesson"?normLesson(raw):mode==="check"?normCopyScan(raw):normScan(raw);
       const empty=mode==="lesson"?(!data.translation.length&&!data.key_ideas.length):!data.items.length;
       if(empty) throw {code:"nothing",message:data.problem};
@@ -2251,7 +2270,7 @@ function exCard(e,it,i){
       save.disabled=true; status.textContent=t("retranslating");
       try{
         const s=await aiReady;
-        const r=await s.json(promptRetranslate(e,it,v),{modelTier:"quick",maxTokens:2000});
+        const r=await s.json(promptRetranslate(e,it,v),{modelTier:tier("translate"),maxTokens:4000});
         it.hebrew=v; it.translation=str(r&&r.translation)||it.translation; it.edited=true;
         delete e.solved[i]; delete ens(e,"revealed")[i]; delete ens(e,"fb")[i]; delete ens(e,"copy")[i];
         saveEntry(e); view(); toast(t("textUpdated"));
@@ -2332,9 +2351,11 @@ function screenSolve(params){
     const ctl=newCtl();
     area.replaceChildren(workingView(null,t(redo?"redoing":"solving"),()=>ctl.abort()));
     try{
-      const imgs=e.example?null:await photoDB.get(e.id);
+      /* The text was read and checked: resend the photo only for a figure, a missing statement or a misreading. */
+      const needPhoto=!it.hebrew||!!it.figure||(!!redo&&arr(redo.reasons).indexOf("read")>=0);
+      const imgs=e.example||!needPhoto?null:await photoDB.get(e.id);
       const meta={};
-      const raw=await s.json(promptSolve(e,it,!!(imgs&&imgs.length),redo),opts({images:imgs&&imgs.length?imgs:null,signal:ctl.signal,modelTier:redo?"complex":"default",tools:[CALC_TOOL],meta}));
+      const raw=await s.json(promptSolve(e,it,!!(imgs&&imgs.length),redo),opts({images:imgs&&imgs.length?imgs:null,signal:ctl.signal,modelTier:tier(redo?"redo":"solve"),tools:[CALC_TOOL],meta}));
       const sol=normSolve(raw);
       if(!sol.steps.length) throw {code:"empty"};
       sol.verified=meta.toolCalls>0;

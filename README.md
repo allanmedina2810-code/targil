@@ -31,4 +31,8 @@ Aide aux devoirs de maths pour les olim hadashim. L'élève photographie un exer
 - `manifest.webmanifest`, `icons/` : installation sur l'écran d'accueil.
 - `sw.js` : démarrage hors ligne de l'interface (les appels à Claude nécessitent Internet).
 
-Modèles utilisés : `claude-sonnet-5-5` (lecture des photos, résolution, vérification de copie), `claude-opus-5-5` (explication refaite après un signalement), `claude-haiku-5-5` (indices, réexplications courtes, retraduction, correction des réponses).
+Modèles utilisés (réglage « Coût et qualité » de l'espace parent) :
+
+- Économique (par défaut) : `claude-sonnet-5-5` lit les photos (exercices, leçons) et les copies, et refait une explication signalée ; `claude-haiku-5-5` fait tout le reste (résolution avec la calculatrice, indices, réexplications, retraduction, correction, exercices similaires).
+- Qualité maximale : `claude-sonnet-5-5` pour tout.
+- Pour la résolution, la photo n'est renvoyée que si l'exercice a une figure, si l'énoncé n'a pas été lu, ou si l'élève a signalé un énoncé mal lu.
